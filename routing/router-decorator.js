@@ -22,10 +22,3 @@ class RouterDecorator {
 }
 
 module.exports = RouterDecorator;
-//
-// {
-//     hello: {
-//         method: 'get',
-//         action: [fada, ,fasdf,]
-//     }
-// }
