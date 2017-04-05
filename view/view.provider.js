@@ -8,3 +8,8 @@ exports.register = (container) => {
         return new ViewFactory(new EventEmitter(), engine);
     });
 };
+
+exports.boot = async(container) => {
+    let kernel = await container.make('http.kernel');
+    kernel.use(require('./view-render.middleware'));
+};

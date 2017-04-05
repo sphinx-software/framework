@@ -25,9 +25,4 @@ exports.boot = async (container) => {
     let config = await container.make('config');
 
     config.http.middlewares.forEach((middleware) => kernel.use(middleware));
-
-    kernel
-        .use(router.routes())
-        .use(router.allowedMethods())
-    ;
 };
