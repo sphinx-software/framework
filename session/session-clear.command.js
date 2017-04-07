@@ -4,8 +4,8 @@ class SessionClearCommand {
         this.sessionStorage = sessionStorage;
     }
 
-    register(program) {
-        return program.command('session:clear');
+    get name() {
+        return 'session:clear';
     }
 
     async action() {

@@ -2,7 +2,6 @@ const lodash  = require('lodash');
 const Acl     = require('acl');
 const AclKnex = require('acl-knex');
 const VError  = require('verror');
-const AclListCommand = require('./acl-list.command');
 
 let factoryBackendAdapter = async (backend, container, prefix) => {
     switch (backend) {
