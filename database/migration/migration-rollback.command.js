@@ -12,7 +12,7 @@ class MigrationRollbackCommand {
     }
 
     get name() {
-        return 'migration-rollback';
+        return 'migration-down';
     }
 
     get description() {
@@ -31,7 +31,7 @@ class MigrationRollbackCommand {
 
         await this.io.run(() => console.log(chalk.green('rolling back migrations')));
         await this.database.migrate.rollback(config);
-        await this.io.run(async () => console.log(chalk.green('done')));
+        await this.io.run(() => console.log(chalk.green('done')));
     }
 }
 

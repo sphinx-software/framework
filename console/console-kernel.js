@@ -30,8 +30,12 @@ class ConsoleKernel {
         }
         command.context = cmdRegistra;
         command.io      = new IO(new Verbosity(cmdRegistra.parent.verbose || 0));
+
         cmdRegistra.action( () => {
-            command.action(...this.program.args);
+            command.action(...this.program.args).then(() => process.exit(0)).catch(e => {
+                console.error(e);
+                process.exit(e.code);
+            });
         });
     }
 
