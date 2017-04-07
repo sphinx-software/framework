@@ -2,7 +2,7 @@ exports.up = async database => {
     <% if (d.tableName) { %>
     await database.schema.createTableIfNotExists("<%= d.tableName %>", table => {
         table.increments();
-        table.timestamp();
+        table.timestamps();
 
         // TODO
     });
