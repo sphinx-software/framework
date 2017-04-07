@@ -5,7 +5,11 @@ class SessionClearCommand {
     }
 
     get name() {
-        return 'session:clear';
+        return 'session-clear';
+    }
+
+    get description() {
+        return 'flushes all the session of the server';
     }
 
     async action() {

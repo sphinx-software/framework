@@ -25,10 +25,13 @@ class ConsoleKernel {
             command.options.forEach( option => cmdRegistra.option(...option));
         }
 
+        if (command.arguments) {
+            cmdRegistra.arguments(command.arguments);
+        }
+        command.context = cmdRegistra;
+        command.io      = new IO(new Verbosity(cmdRegistra.parent.verbose || 0));
         cmdRegistra.action( () => {
-            command.context = cmdRegistra;
-            command.io      = new IO(new Verbosity(cmdRegistra.parent.verbose || 0));
-            command.action(arguments);
+            command.action(...this.program.args);
         });
     }
 

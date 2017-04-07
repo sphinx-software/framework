@@ -16,7 +16,7 @@ exports.register = (container) => {
         return await factory.make(adapterConfig, container);
     });
 
-    container.singleton('command.session:clear', async () => {
+    container.singleton('command.session-clear', async () => {
         return new SessionClearCommand(await container.make('session.storage'));
     });
 };
@@ -38,5 +38,5 @@ exports.boot = async (container) => {
 
 
     let consoleKernel = await container.make('console.kernel');
-    await consoleKernel.register('command.session:clear');
+    await consoleKernel.register('command.session-clear');
 };
