@@ -16,7 +16,7 @@ class MigrationMakeCommand {
     }
 
     get description() {
-        return 'Generates a migration file';
+        return 'Generates a database migration file';
     }
 
     get arguments() {

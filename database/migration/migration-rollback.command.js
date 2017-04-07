@@ -2,9 +2,9 @@ const chalk = require('chalk');
 const path  = require('path');
 
 /**
- * Up Migration Command
+ * Make Migration Command
  */
-class MigrationUpCommand {
+class MigrationRollbackCommand {
 
     constructor(database, config) {
         this.database    = database;
@@ -12,11 +12,11 @@ class MigrationUpCommand {
     }
 
     get name() {
-        return 'migration-up';
+        return 'migration-rollback';
     }
 
     get description() {
-        return 'Runs database migrations';
+        return 'Rollback database migrations';
     }
 
     get options() {
@@ -29,10 +29,10 @@ class MigrationUpCommand {
     async action() {
         let config = this.config.database.migration;
 
-        await this.io.run(() => console.log(chalk.green('running migrations')));
-        await this.database.migrate.latest(config);
+        await this.io.run(() => console.log(chalk.green('rolling back migrations')));
+        await this.database.migrate.rollback(config);
         await this.io.run(async () => console.log(chalk.green('done')));
     }
 }
 
-module.exports = MigrationUpCommand;
+module.exports = MigrationRollbackCommand;

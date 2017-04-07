@@ -1,6 +1,8 @@
 const knex = require('knex');
-const MigrationMakeCommand = require('./migration/migration-make.command');
-const MigrationUpCommand = require('./migration/migration-up.command');
+
+const MigrationMakeCommand      = require('./migration/migration-make.command');
+const MigrationUpCommand        = require('./migration/migration-up.command');
+const MigrationRollbackCommand  = require('./migration/migration-rollback.command');
 
 exports.register = (container) => {
     container.singleton('database', async () => {
@@ -17,6 +19,10 @@ exports.register = (container) => {
         return new MigrationUpCommand(await container.make('database'), await container.make('config'));
     });
 
+    container.singleton('command.migration-rollback', async () => {
+        return new MigrationRollbackCommand(await container.make('database'), await container.make('config'));
+    });
+
 };
 
 exports.boot = async (container) => {
@@ -24,4 +30,5 @@ exports.boot = async (container) => {
 
     await consoleKernel.register('command.migration-make');
     await consoleKernel.register('command.migration-up');
+    await consoleKernel.register('command.migration-rollback');
 };
