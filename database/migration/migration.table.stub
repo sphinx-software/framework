@@ -1,6 +1,6 @@
 exports.up = async (database) => {
     <% if (d.tableName) { %>
-    database.schema.table("<%= d.tableName %>", table => {
+    await database.schema.table("<%= d.tableName %>", table => {
         // TODO
     });
     <% } %>
@@ -8,7 +8,7 @@ exports.up = async (database) => {
 
 exports.down = async database => {
     <% if (d.tableName) { %>
-    database.schema.table("<%= d.tableName %>", table => {
+    await database.schema.table("<%= d.tableName %>", table => {
         // TODO
     });
     <% } %>
