@@ -1,4 +1,4 @@
-const IO = require('./io');
+const IO        = require('./io');
 const Verbosity = require('./verbosity');
 
 class ConsoleKernel {
@@ -14,7 +14,7 @@ class ConsoleKernel {
         let cmdRegistra = this.program.command(command.name);
 
         if (command.alias) {
-            cmdRegistra.alias(command.as)
+            cmdRegistra.alias(command.as);
         }
 
         if (command.description) {

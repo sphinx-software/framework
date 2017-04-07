@@ -9,7 +9,7 @@ class SessionClearCommand {
     }
 
     get description() {
-        return 'flushes all the session of the server';
+        return 'Flushes all the session of the server';
     }
 
     async action() {
