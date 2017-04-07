@@ -1,6 +1,9 @@
 const chalk = require('chalk');
 const path  = require('path');
 
+/**
+ * Make Migration Command
+ */
 class MigrationMakeCommand {
 
     constructor(database, config) {
