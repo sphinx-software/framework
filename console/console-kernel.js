@@ -1,3 +1,6 @@
+const IO = require('./io');
+const Verbosity = require('./verbosity');
+
 class ConsoleKernel {
 
     constructor(program, container) {
@@ -22,7 +25,11 @@ class ConsoleKernel {
             command.options.forEach( option => cmdRegistra.option(...option));
         }
 
-        cmdRegistra.action( (cmd, options) => command.action(cmd, options));
+        cmdRegistra.action( () => {
+            command.context = cmdRegistra;
+            command.io      = new IO(new Verbosity(cmdRegistra.parent.verbose || 0));
+            command.action(arguments);
+        });
     }
 
     run(argv) {
