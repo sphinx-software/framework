@@ -65,14 +65,7 @@ class FileSystemAdapter extends StorageAdapter {
 
         let serializedData = this.serializer.serialize(value);
 
-        await new Promise((resolve, reject) => {
-            fs.writeFile(fileName, serializedData, error => {
-                if (error) {
-                    return reject(error);
-                }
-                return resolve();
-            })
-        })
+        fs.writeFileSync(fileName, serializedData);
     }
 
     /**
