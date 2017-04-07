@@ -9,7 +9,7 @@ exports.register = (container) => {
     });
 
     container.singleton('command.migration-make', async () => {
-        return new MigrationMakeCommand();
+        return new MigrationMakeCommand(await container.make('database'), await container.make('config'));
     })
 };
 

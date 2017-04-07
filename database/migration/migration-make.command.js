@@ -2,9 +2,9 @@ const chalk = require('chalk');
 
 class MigrationMakeCommand {
 
-    constructor(migrationConfig, knexMigrator) {
-        this.migrationConfig = migrationConfig;
-        this.knexMigrator    = knexMigrator;
+    constructor(database, config) {
+        this.database    = database;
+        this.config      = config;
     }
 
     get name() {
@@ -22,14 +22,20 @@ class MigrationMakeCommand {
     get options() {
         return [
             ['-n, --connection <connection-name>',  'the connection name. If no connection was specified, ' +
-                                                    'the default connection will be used'],
-            ['-c, --create <table-name>', 'specify migration as creating a table'],
-            ['-t, --table <table-name>', 'specify migration as altering a table'],
+                                                    'the default connection will be used'                       ],
+            ['-c, --create <table-name>', 'specify migration as creating a table'                               ],
+            ['-t, --table <table-name>', 'specify migration as altering a table'                                ],
         ];
     }
 
     async action(migrationName) {
-        console.log(chalk.green('generating migration for'), chalk.yellow(migrationName));
+        await this.io.run(() => console.log(chalk.green('generating migration for'), chalk.yellow(migrationName)));
+
+        await this.io.run(
+            async() => console.log(
+                chalk.yellow(await this.database.migrate.make(migrationName, this.config.database.migration))
+            )
+        );
     }
 }
 
