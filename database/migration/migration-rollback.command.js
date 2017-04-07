@@ -1,8 +1,7 @@
 const chalk = require('chalk');
-const path  = require('path');
 
 /**
- * Make Migration Command
+ * Rollback Migration Command
  */
 class MigrationRollbackCommand {
 
@@ -16,7 +15,7 @@ class MigrationRollbackCommand {
     }
 
     get description() {
-        return 'Rollback database migrations';
+        return 'Rollbacks database migrations';
     }
 
     get options() {

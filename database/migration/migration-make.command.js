@@ -25,10 +25,8 @@ class MigrationMakeCommand {
 
     get options() {
         return [
-            ['-n, --connection <connection-name>',  'the connection name. If no connection was specified, ' +
-                                                    'the default connection will be used'                       ],
-            ['-c, --create <table-name>', 'specify migration as creating a table'                               ],
-            ['-t, --table <table-name>', 'specify migration as altering a table'                                ],
+            ['-c, --create <table-name>', 'specify migration as creating a table' ],
+            ['-t, --table <table-name>', 'specify migration as altering a table'  ],
         ];
     }
 
@@ -51,7 +49,7 @@ class MigrationMakeCommand {
 
         await this.io.run(
             async() => console.log(
-                chalk.yellow(await this.database.migrate.make(migrationName, config))
+                chalk.green(await this.database.migrate.make(migrationName, config))
             )
         );
     }
