@@ -25,8 +25,11 @@ class ConsoleKernel {
         cmdRegistra.action( (cmd, options) => command.action(cmd, options));
     }
 
-    run() {
-        return this.program.parse(process.argv);
+    run(argv) {
+        this.program.parse(argv);
+        if (this.program.args.length === 0) {
+            this.program.help();
+        }
     }
 }
 
