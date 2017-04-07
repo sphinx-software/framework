@@ -1,4 +1,5 @@
-const Session = require('./session');
+const Session               = require('./session');
+const SessionClearCommand   = require('./session-clear.command');
 
 exports.register = (container) => {
 
@@ -13,6 +14,10 @@ exports.register = (container) => {
         adapterConfig.adapter = sessionConfig.use;
 
         return await factory.make(adapterConfig, container);
+    });
+
+    container.singleton('command.session-clear', async () => {
+        return new SessionClearCommand(await container.make('session.storage'));
     });
 };
 
@@ -29,5 +34,9 @@ exports.boot = async (container) => {
 
         // Rebuild the session from it's session data
         (sessionData) => new Session(serializer).init(sessionData)
-    )
+    );
+
+
+    let consoleKernel = await container.make('console.kernel');
+    await consoleKernel.register('command.session-clear');
 };

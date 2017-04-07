@@ -1,14 +1,15 @@
-const program = require('commander');
+const program           = require('commander');
+const ConsoleKernel     = require('./console-kernel');
+const fs                = require('fs');
 
 exports.register = (container) => {
-    // TODO need to standardize the kernel
     container.singleton('console.kernel', async () => {
-        let config = await container.make('config');
 
-        program.container = container;
+        program
+            .version(fs.readFileSync(__dirname + '/header.txt', {encoding: 'utf-8'}))
+            .option('-v, --verbose', 'set the output verbosity', (v, total) => total + 1, 0)
+        ;
 
-        return program.version('0.0.1').command('*').option('--version').action(function () {
-            console.log('0.0.1')
-        });
+        return new ConsoleKernel(program, container);
     });
 };

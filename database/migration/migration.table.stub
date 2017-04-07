@@ -1,0 +1,15 @@
+exports.up = async (database) => {
+    <% if (d.tableName) { %>
+    await database.schema.table("<%= d.tableName %>", table => {
+        // TODO
+    });
+    <% } %>
+};
+
+exports.down = async database => {
+    <% if (d.tableName) { %>
+    await database.schema.table("<%= d.tableName %>", table => {
+        // TODO
+    });
+    <% } %>
+};
