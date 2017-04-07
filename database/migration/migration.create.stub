@@ -1,0 +1,16 @@
+exports.up = async database => {
+    <% if (d.tableName) { %>
+    database.schema.createTableIfNotExists("<%= d.tableName %>", table => {
+        table.increments();
+        table.timestamp();
+
+        // TODO
+    });
+    <% } %>
+};
+
+exports.down = async database => {
+    <% if (d.tableName) { %>
+    return database.schema.dropTable("<%= d.tableName %>");
+    <% } %>
+};

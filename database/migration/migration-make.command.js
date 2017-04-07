@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const path  = require('path');
 
 class MigrationMakeCommand {
 
@@ -29,11 +30,25 @@ class MigrationMakeCommand {
     }
 
     async action(migrationName) {
+        let config = this.config.database.migration;
+
         await this.io.run(() => console.log(chalk.green('generating migration for'), chalk.yellow(migrationName)));
+
+        config.variables = {};
+
+        if (this.context.table) {
+            config.stub = path.normalize(path.join(__dirname, 'migration.table.stub'));
+            config.variables.tableName = this.context.table;
+        }
+
+        if (this.context.create) {
+            config.stub = path.normalize(path.join(__dirname, 'migration.create.stub'));
+            config.variables.tableName = this.context.create;
+        }
 
         await this.io.run(
             async() => console.log(
-                chalk.yellow(await this.database.migrate.make(migrationName, this.config.database.migration))
+                chalk.yellow(await this.database.migrate.make(migrationName, config))
             )
         );
     }
