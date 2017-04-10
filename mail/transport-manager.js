@@ -14,7 +14,7 @@ class TransportManager {
     /**
      *
      * @param {string} name
-     * @param {transport} transport
+     * @param {transport|LogTransport} transport
      * @return {TransportManager}
      */
     addTransport(name, transport) {
