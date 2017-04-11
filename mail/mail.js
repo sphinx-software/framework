@@ -22,6 +22,7 @@ class Mail {
      */
     from(from) {
         this.options.from = from;
+        return this;
     }
 
     /**
@@ -30,6 +31,7 @@ class Mail {
      */
     to(to) {
         this.options.to = to;
+        return this;
     }
 
     /**
@@ -38,6 +40,7 @@ class Mail {
      */
     cc(cc) {
         this.options.cc = cc;
+        return this;
     }
 
     /**
@@ -46,6 +49,7 @@ class Mail {
      */
     bcc(bcc) {
         this.options.bcc = bcc;
+        return this;
     }
 
     /**
@@ -54,6 +58,7 @@ class Mail {
      */
     subject(subject) {
         this.options.subject = subject;
+        return this;
     }
 
     /**
@@ -62,6 +67,7 @@ class Mail {
      */
     attachments(attachments) {
         this.options.attachments = attachments;
+        return this;
     }
 
     /**
@@ -71,6 +77,7 @@ class Mail {
      */
     set(optionName, value) {
         this.options[optionName] = value;
+        return this;
     }
 
     /**
