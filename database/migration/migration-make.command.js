@@ -40,11 +40,9 @@ class MigrationMakeCommand {
         if (this.context.table) {
             config.stub = path.normalize(path.join(__dirname, 'migration.table.stub'));
             config.variables.tableName = this.context.table;
-        }
-
-        if (this.context.create) {
+        } else {
             config.stub = path.normalize(path.join(__dirname, 'migration.create.stub'));
-            config.variables.tableName = this.context.create;
+            config.variables.tableName = this.context.create || null;
         }
 
         await this.io.run(
