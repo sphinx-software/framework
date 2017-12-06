@@ -1,5 +1,5 @@
 {
-  "name": "sphinx",
+  "name": "@sphinx-software/fusion",
   "version": "0.0.1",
   "description": "Sphinx Standard Library for Web Application",
   "main": "index.js",
@@ -29,9 +29,21 @@
     "koa-router": "^7.0.1",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.25",
+    "nodemailer": "^4.0.0",
     "nunjucks": "^3.0.0",
     "uuid": "^3.0.1",
     "verror": "^1.9.0",
     "winston": "^2.3.1"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sphinx-software/sphinx-web-stdlib.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sphinx-software/sphinx-web-stdlib/issues"
+  },
+  "homepage": "https://github.com/sphinx-software/sphinx-web-stdlib#readme"
 }
