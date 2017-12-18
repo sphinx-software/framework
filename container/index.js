@@ -66,9 +66,10 @@ class Container {
      * Resolve a dependency
      *
      * @param {string} dependencyName
+     * @param constructorParameters
      * @returns {Promise.<*>}
      */
-    async make(dependencyName) {
+    async make(dependencyName, ...constructorParameters) {
 
         if (this.resolved[dependencyName]) {
             return this.resolved[dependencyName];
@@ -82,7 +83,7 @@ class Container {
 
         this.ee.emit(Container.generateMakingEventName(dependencyName), bindingRecipe);
 
-        let resolved = await bindingRecipe['factory'](this);
+        let resolved = await bindingRecipe['factory'](this, ...constructorParameters);
 
         this.ee.emit(Container.generateMadeEventName(dependencyName), resolved);
 
