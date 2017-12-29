@@ -11,7 +11,11 @@ exports.register = (container) => {
     container.singleton('database', async () => {
         let config = await container.make('config');
 
-        return knex(config.database);
+        let database = knex(config.database);
+
+        database.container = container;
+
+        return database;
     });
 
     container.singleton('command.migration-make', async () => {
