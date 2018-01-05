@@ -17,8 +17,6 @@
     "sqlite3": "^3.1.8"
   },
   "dependencies": {
-    "acl": "^0.4.10",
-    "acl-knex": "^0.2.3",
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
     "chalk": "^1.1.3",
