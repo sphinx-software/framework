@@ -1,6 +1,6 @@
 {
   "name": "@sphinx-software/fusion",
-  "version": "0.0.3",
+  "version": "0.1.10",
   "description": "Sphinx Standard Library for Web Application",
   "main": "index.js",
   "scripts": {
@@ -17,20 +17,14 @@
     "sqlite3": "^3.1.8"
   },
   "dependencies": {
-    "acl": "^0.4.10",
-    "acl-knex": "^0.2.3",
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
     "chalk": "^1.1.3",
     "commander": "^2.9.0",
-    "ioredis": "^2.5.0",
-    "knex": "^0.12.9",
     "koa": "^2.0.0-alpha.8",
     "koa-router": "^7.0.1",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.25",
     "nodemailer": "^4.0.0",
-    "nunjucks": "^3.0.0",
     "uuid": "^3.0.1",
     "verror": "^1.9.0",
     "winston": "^2.3.1"
