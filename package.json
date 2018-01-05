@@ -25,7 +25,6 @@
     "koa": "^2.0.0-alpha.8",
     "koa-router": "^7.0.1",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.25",
     "nodemailer": "^4.0.0",
     "nunjucks": "^3.0.0",
     "uuid": "^3.0.1",
