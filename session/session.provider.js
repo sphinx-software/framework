@@ -11,9 +11,7 @@ exports.register = (container) => {
         let sessionConfig = config.session;
         let adapterConfig = sessionConfig.adapters[sessionConfig.use];
 
-        adapterConfig.adapter = sessionConfig.use;
-
-        return await factory.make(adapterConfig, container);
+        return await factory.make(sessionConfig.use, adapterConfig);
     });
 
     container.singleton('command.session-clear', async () => {

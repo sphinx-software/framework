@@ -4,6 +4,6 @@ exports.register = (container) => {
         let storageFactory = await container.make('storage.factory');
         let config         = await container.make('config');
 
-        return await storageFactory.make(config.cache, container);
+        return await storageFactory.make(config.cache.adapter, config.cache);
     });
 };
