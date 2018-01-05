@@ -1,3 +1,6 @@
+/**
+ * @interface
+ */
 class StorageAdapter {
     setDefaultTTL(defaultTTL) {
         throw new Error('Not Implemented');

@@ -6,7 +6,7 @@ class FactoryManager {
     }
 
     register(adapterName, adapterFactory) {
-        this.factories = adapterFactory;
+        this.factories[adapterName] = adapterFactory;
         return this;
     }
 
