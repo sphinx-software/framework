@@ -40,15 +40,16 @@ class FileSystemAdapter extends StorageAdapter {
         let fileName    = this.naming.nameFor(this.directory, key);
         let filesystem  = this.filesystem;
 
-        // Don't reject the error.
-        // Considering any error occurred as no data
-        let readFilePromise = new Promise(resolve => {
-            filesystem.readFile(fileName, (error, result) => {
-                resolve(error ? null: result);
-            })
-        });
-
-        let serializedData = await readFilePromise;
+        let serializedData = null;
+        try {
+            serializedData = filesystem.readFileSync(fileName);
+        } catch (error) {
+            if (error.code !== 'ENOENT') {
+                throw error;
+            }
+            // Don't reject the error.
+            // Considering any error occurred as no data
+        }
 
         return serializedData ? this.serializer.deserialize(serializedData) : valueIfNotExisted;
     }
