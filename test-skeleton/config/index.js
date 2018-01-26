@@ -15,14 +15,22 @@ export default {
         './../View',
         './../Storage',
         './../Cache',
+        './../Url',
 
         // Application Module
         'Http'
     ],
 
     http: {
-        port       : process.env.HTTP_PORT || 8800,
-        middlewares: []
+        port        : process.env.HTTP_PORT   || 8800,
+        host        : process.env.HTTP_HOST   || 'localhost:8800',
+        secure      : process.env.HTTP_SECURE || false,
+        asset       : '/',
+
+        // Global middlewares
+        middlewares : [
+
+        ],
     },
     cache,
     hash: {

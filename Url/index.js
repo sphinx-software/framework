@@ -1,6 +1,8 @@
 /**
  * URL Helper. This will generate fully-qualified url
  */
+import {provider} from "../Fusion/Fusion";
+
 class Url {
 
     /**
@@ -97,4 +99,23 @@ class Url {
     }
 }
 
-module.exports = Url;
+@provider()
+export class UrlServiceProvider {
+    constructor(container) {
+        this.container = container;
+    }
+
+    register() {
+        this.container.singleton('url', async () => {
+            let router = await this.container.make('http.router');
+            let config = await this.container.make('config');
+
+            return new Url(router).setHost(config.http.host).setAssetsPath(config.http.asset).secure(config.http.secure);
+        });
+    }
+
+    async boot() {
+        let view = await this.container.make('view');
+        view.global('url', await this.container.make('url'));
+    }
+}
