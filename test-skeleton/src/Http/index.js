@@ -14,12 +14,12 @@ export class HelloMiddleware {
     }
 }
 
-@singleton('config', 'hash')
+@singleton('config', 'cache')
 @controller()
 export class WelcomeController {
-    constructor(config, hash) {
+    constructor(config, cache) {
         this.config = config;
-        this.hash   = hash;
+        console.log(cache);
     }
 
     @get('/', [HelloMiddleware])

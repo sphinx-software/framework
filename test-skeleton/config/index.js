@@ -8,6 +8,7 @@ export default {
     modules: [
         // Frameworks Module
         './../Http',
+        './../Serializer',
         './../Hash',
         './../Log',
         './../MetaInjector',
