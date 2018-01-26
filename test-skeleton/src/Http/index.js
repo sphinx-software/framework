@@ -1,8 +1,12 @@
 import {controller, get} from '../../../Http';
 import {singleton} from '../../../MetaInjector';
 
-@singleton()
+@singleton('logger')
 export class HelloMiddleware {
+
+    constructor(logger) {
+        this.logger = logger;
+    }
 
     async handle(context, next) {
         context.body = {hello: 'world'};

@@ -1,4 +1,4 @@
-const path = require('path');
+import path from 'path';
 
 class StorageFileNamingConvention {
 
@@ -19,7 +19,8 @@ class StorageFileNamingConvention {
      * @return {string}
      */
     nameFor(directory, key) {
-        return path.normalize(path.join(directory, `sphinx--${this.prefix}--${key}.dat`));
+        return path.normalize(
+            path.join(directory, `sphinx--${this.prefix}--${key}.dat`));
     }
 }
 

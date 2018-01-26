@@ -4,14 +4,14 @@ import lodash from 'lodash';
 /**
  * Strategy based serializer
  */
-export class Serializer {
+export default class Serializer {
 
     /**
      *
      */
     constructor() {
-        this.types      = {};
-        this.default    = null;
+        this.types   = {};
+        this.default = null;
     }
 
     /**
@@ -23,9 +23,9 @@ export class Serializer {
      */
     forType(type, serializeFunction, deserializeFunction) {
         this.types[Serializer.getTypeNameFromType(type)] = {
-            serialize: serializeFunction,
+            serialize  : serializeFunction,
             deserialize: deserializeFunction,
-            type: Serializer.getTypeNameFromType(type)
+            type       : Serializer.getTypeNameFromType(type)
         };
 
         return this;
@@ -53,7 +53,8 @@ export class Serializer {
         let strategy = this.types[type] || this.types[this.default];
 
         if (!strategy) {
-            throw new VError('E_SERIALIZER: Strategy for type [%s] is not supported', type);
+            throw new VError(
+                'E_SERIALIZER: Strategy for type [%s] is not supported', type);
         }
 
         return strategy;
@@ -77,11 +78,12 @@ export class Serializer {
     serialize(item) {
 
         if (lodash.isNull(item)) {
-            throw new VError('E_SERIALIZER: Could not serialize [null] value')
+            throw new VError('E_SERIALIZER: Could not serialize [null] value');
         }
 
         if (lodash.isUndefined(item)) {
-            throw new VError('E_SERIALIZER: Could not serialize [undefined] value')
+            throw new VError(
+                'E_SERIALIZER: Could not serialize [undefined] value');
         }
 
         let type     = item.constructor.name;

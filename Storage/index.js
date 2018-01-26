@@ -6,7 +6,7 @@ import FactoryManager            from '../factory-manager';
 import CacheFileNamingConvention from './adapters/filesystem/storage-file-naming-convention';
 
 @provider()
-export default class StorageServiceProvider {
+export class StorageServiceProvider {
 
     constructor(container, fusion) {
         this.container = container;

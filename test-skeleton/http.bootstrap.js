@@ -15,6 +15,8 @@ import EventEmitter from 'events';
 
     kernel.use(router.routes()).use(router.allowedMethods());
 
-    kernel.listen(config.http.port);
+    kernel.listen(config.http.port,() =>
+        console.log(`app listen port: ${config.http.port}`)
+    );
 
 })().catch(console.error);
