@@ -23,4 +23,5 @@ class StorageFileNamingConvention {
     }
 }
 
-module.exports = StorageFileNamingConvention;
+export default StorageFileNamingConvention;
+

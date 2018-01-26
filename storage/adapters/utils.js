@@ -11,5 +11,5 @@ exports.isExpired = (expiredDate) => {
 };
 
 exports.isNotExpired = (expiredDate) => {
-    return ! exports.isExpired(expiredDate);
+    return !exports.isExpired(expiredDate);
 };

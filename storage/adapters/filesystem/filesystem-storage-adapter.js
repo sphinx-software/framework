@@ -1,10 +1,8 @@
-const StorageAdapter = require('./../storage-adapter');
-const path           = require('path');
+import StorageAdapter from '../storage-adapter';
+import { promisify }  from 'util';
+import path           from 'path';
 
-/**
- *
- */
-class FileSystemAdapter extends StorageAdapter {
+export default class FileSystemAdapter extends StorageAdapter {
 
     /**
      *
@@ -17,6 +15,8 @@ class FileSystemAdapter extends StorageAdapter {
         this.serializer = serializer;
         this.filesystem = filesystem;
         this.naming     = naming;
+
+        this.filesystem.exists = promisify(this.filesystem.exists);
     }
 
     /**
@@ -37,20 +37,22 @@ class FileSystemAdapter extends StorageAdapter {
      * @return {Promise.<*>}
      */
     async get(key, valueIfNotExisted = null) {
-        let fileName    = this.naming.nameFor(this.directory, key);
-        let filesystem  = this.filesystem;
+        let fileName   = this.naming.nameFor(this.directory, key);
+        let filesystem = this.filesystem;
 
         // Don't reject the error.
         // Considering any error occurred as no data
         let readFilePromise = new Promise(resolve => {
             filesystem.readFile(fileName, (error, result) => {
-                resolve(error ? null: result);
-            })
+                resolve(error ? null : result);
+            });
         });
 
         let serializedData = await readFilePromise;
 
-        return serializedData ? this.serializer.deserialize(serializedData) : valueIfNotExisted;
+        return serializedData
+            ? this.serializer.deserialize(serializedData)
+            : valueIfNotExisted;
     }
 
     /**
@@ -74,8 +76,8 @@ class FileSystemAdapter extends StorageAdapter {
      * @return {Promise.<void>}
      */
     async unset(key) {
-        let fileName    = this.naming.nameFor(this.directory, key);
-        let filesystem  = this.filesystem;
+        let fileName   = this.naming.nameFor(this.directory, key);
+        let filesystem = this.filesystem;
 
         // Swallow error. Considering any error as no item
         // in the storage, so the error is a false-positive
@@ -97,25 +99,18 @@ class FileSystemAdapter extends StorageAdapter {
         let filesystem = this.filesystem;
         let directory  = this.directory;
 
-        return await new Promise(function (resolve, reject) {
-            filesystem.exists(directory, (error, result) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(result);
-            });
-        });
+        return filesystem.exists(directory);
     }
 
     async flush() {
         let files = this.filesystem.readdirSync(this.directory);
 
-        files.forEach( file => {
+        files.forEach(file => {
             if (file.endsWith('.dat')) {
-                this.filesystem.unlinkSync(path.normalize(path.join(this.directory, file)));
+                this.filesystem.unlinkSync(
+                    path.normalize(path.join(this.directory, file)));
             }
-        })
+        });
 
     }
 }

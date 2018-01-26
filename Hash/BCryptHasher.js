@@ -1,7 +1,7 @@
 /**
  * Wraps the native bcrypt lib to expose the Promise based api
  */
-class BcryptHasher {
+export default class BCryptHasher {
 
     /**
      *
@@ -61,5 +61,3 @@ class BcryptHasher {
         });
     }
 }
-
-module.exports = BcryptHasher;

@@ -1,6 +1,6 @@
 'use strict';
 
-const BcryptHasher = require('./../../hash/bcrypt-hasher');
+const BcryptHasher = require('../../Hash/bcrypt-hasher');
 const chai      = require('chai');
 const bcrypt    = require('bcrypt');
 
