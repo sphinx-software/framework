@@ -1,4 +1,4 @@
-class View {
+export default class View {
 
     constructor(template, data) {
         this.template = template;
@@ -18,5 +18,3 @@ class View {
         return this.data;
     }
 }
-
-module.exports = View;

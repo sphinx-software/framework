@@ -1,6 +1,6 @@
-const lodash = require('lodash');
+import lodash from 'lodash';
 
-class Mail {
+export class Mail {
 
     /**
      *
@@ -94,5 +94,3 @@ class Mail {
         await this.transportManager.transport(transporter).sendMail(options);
     }
 }
-
-module.exports = Mail;

@@ -1,6 +1,6 @@
-const VError = require('verror');
+import VError from 'verror';
 
-class TransportManager {
+export default class TransportManager {
 
     /**
      *
@@ -50,4 +50,3 @@ class TransportManager {
     }
 }
 
-module.exports = TransportManager;
