@@ -1,9 +1,9 @@
+import {singleton} from "../MetaInjector";
+
 const VError = require('verror');
 
-/**
- *
- */
-class Timer {
+@singleton()
+export default class Timer {
 
     /**
      *
@@ -32,5 +32,3 @@ class Timer {
         return await Promise.race([waitPromise, longtimeJob]);
     }
 }
-
-module.exports = Timer;
