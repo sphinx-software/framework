@@ -18,9 +18,12 @@ export default {
         './../Url',
         './../Timer',
         './../Mail',
+        './../Console',
 
         // Application Module
-        'Http'
+        'Http',
+        'Console',
+        'Quotes'
     ],
 
     http: {
