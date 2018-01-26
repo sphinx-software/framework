@@ -1,6 +1,6 @@
 import path           from 'path';
 import { promisify }  from 'util';
-import StorageAdapter from '../storage-adapter';
+import StorageAdapter from '../StorageAdapter';
 
 export default class FileSystemAdapter extends StorageAdapter {
 

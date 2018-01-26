@@ -1,5 +1,6 @@
 import { controller, get } from '../../../Http';
 import { singleton }       from '../../../MetaInjector';
+import FactoryManager      from '../../../FactoryManager';
 
 @singleton('logger')
 export class HelloMiddleware {
@@ -14,17 +15,17 @@ export class HelloMiddleware {
     }
 }
 
-@singleton('config', 'hash')
+@singleton('config', FactoryManager)
 @controller()
 export class WelcomeController {
-    constructor(config, hash) {
-        this.config = config;
-        this.hash   = hash;
+    constructor(config, factoryManager) {
+        this.config         = config;
+        this.factoryManager = factoryManager;
     }
 
     @get('/', [HelloMiddleware])
     async foo(context) {
+        console.log(await this.factoryManager.make('memory'));
         context.body.config = this.config;
-        context.body.hash   = await this.hash.generate('test');
     }
 }

@@ -1,4 +1,4 @@
-import StorageAdapter from './storage-adapter';
+import StorageAdapter from './StorageAdapter';
 
 /**
  * For failover purpose only
