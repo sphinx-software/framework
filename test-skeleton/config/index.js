@@ -1,10 +1,15 @@
-import cache from './cache';
+import 'winston-daily-rotate-file';
+import winston from 'winston';
+import path    from 'path';
+import cache   from './cache';
 
 export default {
 
     modules: [
         // Frameworks Module
         './../Http',
+        './../Hash',
+        './../Log',
         './../MetaInjector',
         './../Storage',
         './../Cache',
@@ -17,5 +22,30 @@ export default {
         port       : process.env.HTTP_PORT || 8800,
         middlewares: []
     },
-    cache
+    cache,
+    hash: {
+        rounds: 10
+    },
+
+    log: {
+        transports: [
+
+            // File rotate logger
+            new winston.transports.DailyRotateFile({
+                filename   : path.normalize(
+                    `${__dirname}/../storages/logs/sphinx--`),
+                datePattern: 'yyyy-MM-dd.log',
+                level      : 'debug'
+            }),
+
+            // Error logger
+            new winston.transports.File({
+                filename: path.normalize(
+                    `${__dirname}/../storages/logs/error.log`),
+                level   : 'error'
+            })
+        ],
+
+        level: process.env.LOG_LEVEL || 'debug'
+    }
 };

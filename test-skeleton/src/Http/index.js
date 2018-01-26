@@ -1,8 +1,12 @@
 import { controller, get } from '../../../Http';
 import { singleton }       from '../../../MetaInjector';
 
-@singleton()
+@singleton('logger')
 export class HelloMiddleware {
+
+    constructor(logger) {
+        this.logger = logger;
+    }
 
     async handle(context, next) {
         context.body = { hello: 'world' };
@@ -10,16 +14,17 @@ export class HelloMiddleware {
     }
 }
 
-@singleton('config', 'cache')
+@singleton('config', 'hash')
 @controller()
 export class WelcomeController {
-    constructor(config, cache) {
+    constructor(config, hash) {
         this.config = config;
-        console.log(cache);
+        this.hash   = hash;
     }
 
-    @get('/hello', [HelloMiddleware])
+    @get('/', [HelloMiddleware])
     async foo(context) {
         context.body.config = this.config;
+        context.body.hash   = await this.hash.generate('test');
     }
 }
