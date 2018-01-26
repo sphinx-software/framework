@@ -66,12 +66,25 @@ export class HttpRouterServiceProvider {
         let controllerActionNames = Object.getOwnPropertyNames(Controller.prototype)
             .filter(methodName => Reflect.hasMetadata('http.action', controller, methodName));
 
-        controllerActionNames.forEach(actionName => {
+        for (let index = 0; index < controllerActionNames.length; index++) {
+            let actionName = controllerActionNames[index];
             let metadata = Reflect.getMetadata('http.action', controller, actionName);
 
-            router[metadata.method](`${Controller.name}@${actionName}`, metadata.url, controller[actionName]);
-        })
+            let middlewares = await Promise.all(metadata.middlewares.map(middleware => this.container.make(middleware)));
 
+            router[metadata.method](
+                // The route name
+                `${Controller.name}@${actionName}`,
+
+                // The route url
+                metadata.url,
+
+                // Middleware handlers
+                ...middlewares.map(middleware => middleware.handle),
+
+                // Controller's action
+                controller[actionName]);
+        }
     }
 }
 

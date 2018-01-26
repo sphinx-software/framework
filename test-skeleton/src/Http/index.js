@@ -2,7 +2,6 @@ import {kernelMiddleware, controller, get} from "../../../Http";
 import {singleton} from "../../../MetaInjector";
 
 @singleton()
-@kernelMiddleware()
 export class HelloMiddleware {
 
     async handle(context, next) {
@@ -19,9 +18,8 @@ export class WelcomeController {
         this.config = config;
     }
 
-    @get('/hello')
+    @get('/hello', [HelloMiddleware])
     async foo(context) {
-        //
-        context.body = {foo: 'bar2'}
+        context.body.foo = 'bar2';
     }
 }
