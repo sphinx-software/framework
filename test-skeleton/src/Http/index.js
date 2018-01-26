@@ -14,17 +14,11 @@ export class HelloMiddleware {
     }
 }
 
-@singleton('config', 'hash')
+@singleton()
 @controller()
 export class WelcomeController {
-    constructor(config, hash) {
-        this.config = config;
-        this.hash   = hash;
-    }
-
     @get('/', [HelloMiddleware])
     async foo(context) {
-        context.body.config = this.config;
-        context.body.hash   = await this.hash.generate('test');
+        context.body = context.view.make('welcome');
     }
 }

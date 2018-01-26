@@ -25,18 +25,18 @@ export class HttpServiceProvider {
         let kernel = await this.container.make('http.kernel');
         let config = await this.container.make('config');
 
-        let middlewares = this.fusion.getByManifest('http.kernelMiddleware');
-
         config.http.middlewares.forEach(middleware => {
             kernel.use(middleware);
         });
+
+        let middlewares = this.fusion.getByManifest('http.kernelMiddleware');
 
         for (let index = 0; index < middlewares.length; index++) {
             const Symbol   = middlewares[index];
 
             let middleware = await this.container.make(Symbol);
 
-            kernel.use(middleware.handle)
+            kernel.use( (context, next) => middleware.handle(context, next));
         }
     }
 }

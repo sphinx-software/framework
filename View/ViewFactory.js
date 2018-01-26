@@ -1,6 +1,6 @@
-const View = require('./view');
+import View from './View';
 
-class ViewFactory {
+export default class ViewFactory {
 
     /**
      *
@@ -76,5 +76,3 @@ class ViewFactory {
         return this;
     }
 }
-
-module.exports = ViewFactory;

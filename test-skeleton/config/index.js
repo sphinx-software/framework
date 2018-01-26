@@ -10,6 +10,7 @@ export default  {
         './../Hash',
         './../Log',
         './../MetaInjector',
+        './../View',
         './../storage',
 
         // Application Module
@@ -45,8 +46,10 @@ export default  {
         ],
 
         level: process.env.LOG_LEVEL || 'debug'
+    },
+
+    view: {
+        directory: path.normalize(path.join(__dirname, '..', 'resources', 'views')),
     }
 };
-
-
 
