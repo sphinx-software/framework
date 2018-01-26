@@ -4,6 +4,7 @@ export default  {
         // Frameworks Module
         './../Http',
         './../MetaInjector',
+        './../storage',
 
         // Application Module
         'Http'

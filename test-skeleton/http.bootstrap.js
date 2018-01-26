@@ -12,6 +12,6 @@ import EventEmitter from 'events';
     let container = await fusion.activate(config, new Container(new EventEmitter()));
     let kernel    = await container.make('http.kernel');
 
-    kernel.listen(config.http.port);
+    kernel.listen(config.http.port,() => console.log(`app listen port: ${config.http.port}`));
 })().catch(console.error);
 

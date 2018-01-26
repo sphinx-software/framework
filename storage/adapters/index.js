@@ -1,3 +1,4 @@
-exports.NullStorageAdapter       = require('./null');
-exports.MemoryStorageAdapter     = require('./memory/memory-storage-adapter');
-exports.FilesystemStorageAdapter = require('./filesystem/filesystem-storage-adapter');
+export NullStorageAdapter       from './null';
+export MemoryStorageAdapter     from './memory/memory-storage-adapter';
+export FilesystemStorageAdapter from './filesystem/filesystem-storage-adapter';
+
