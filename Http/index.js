@@ -80,10 +80,10 @@ export class HttpRouterServiceProvider {
                 metadata.url,
 
                 // Middleware handlers
-                ...middlewares.map(middleware => middleware.handle),
+                ...middlewares.map(middleware => (context, next) => middleware.handle(context, next)),
 
                 // Controller's action
-                controller[actionName]);
+                (context, next) => controller[actionName](context, next));
         }
     }
 }

@@ -20,6 +20,6 @@ export class WelcomeController {
 
     @get('/hello', [HelloMiddleware])
     async foo(context) {
-        context.body.foo = 'bar2';
+        context.body.config = this.config;
     }
 }
