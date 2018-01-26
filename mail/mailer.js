@@ -1,6 +1,6 @@
-const Mail = require('./mail');
+import Mail from 'mail';
 
-class Mailer {
+export class Mailer {
 
     constructor(viewFactory, transportManager, mailOptions) {
         this.viewFactory        = viewFactory;
@@ -19,5 +19,3 @@ class Mailer {
         return mail;
     }
 }
-
-module.exports = Mailer;

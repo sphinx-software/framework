@@ -1,4 +1,4 @@
-class LogTransport {
+export class LogTransport {
 
     constructor(logger) {
         this.logger = logger;
@@ -8,5 +8,3 @@ class LogTransport {
         this.logger.debug('A mail was sent via log service', mailOptions);
     }
 }
-
-module.exports = LogTransport;
