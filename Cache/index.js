@@ -1,8 +1,8 @@
 import FactoryManager from '../factory-manager';
 import { provider }   from '../Fusion/Fusion';
 
-@provider
-class CacheServiceProvider {
+@provider()
+export class CacheServiceProvider {
 
     constructor(container, fusion) {
         this.container = container;

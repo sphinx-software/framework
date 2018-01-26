@@ -10,11 +10,12 @@ export class HelloMiddleware {
     }
 }
 
-@singleton('config')
+@singleton('config', 'cache')
 @controller()
 export class WelcomeController {
-    constructor(config) {
+    constructor(config, cache) {
         this.config = config;
+        console.log(cache);
     }
 
     @get('/hello', [HelloMiddleware])
