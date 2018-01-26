@@ -1,4 +1,4 @@
-import FactoryManager from '../factory-manager';
+import FactoryManager from '../FactoryManager';
 import { provider }   from '../Fusion/Fusion';
 
 @provider()

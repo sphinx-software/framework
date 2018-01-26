@@ -1,6 +1,6 @@
 import lodash         from 'lodash';
 import utils          from '../utils';
-import StorageAdapter from '../storage-adapter';
+import StorageAdapter from '../StorageAdapter';
 
 /**
  * For development & testing purpose only.

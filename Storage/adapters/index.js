@@ -1,4 +1,4 @@
-export NullStorageAdapter       from './null';
-export MemoryStorageAdapter     from './memory/memory-storage-adapter';
-export FilesystemStorageAdapter from './filesystem/filesystem-storage-adapter';
+export NullStorageAdapter       from './Null';
+export MemoryStorageAdapter     from './memory/MemoryStorageAdapter';
+export FilesystemStorageAdapter from './filesystem/FilesystemStorageAdapter';
 

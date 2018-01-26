@@ -1,4 +1,4 @@
-import Serializer   from './serializer';
+import Serializer   from './Serializer';
 import { provider } from '../Fusion/Fusion';
 
 @provider()

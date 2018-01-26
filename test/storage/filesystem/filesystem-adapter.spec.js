@@ -2,8 +2,8 @@ const assert = require('chai').assert;
 const sinon  = require('sinon');
 const fs     = require('fs');
 
-const FileSystemStorageAdapter  = require('../../../storage/adapters/filesystem/filesystem-storage-adapter');
-const StorageFileNamingConvention = require('../../../storage/adapters/filesystem/storage-file-naming-convention');
+const FileSystemStorageAdapter  = require('../../../Storage/adapters/filesystem/FilesystemStorageAdapter');
+const StorageFileNamingConvention = require('../../../Storage/adapters/filesystem/StorageFileNamingConvention');
 
 
 describe('FilesystemStorageAdapter test suite', () => {
