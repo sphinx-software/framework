@@ -1,6 +1,6 @@
 import VError from 'verror';
 
-class TransportManager {
+export default class TransportManager {
 
     /**
      *

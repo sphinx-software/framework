@@ -1,6 +1,6 @@
-import Mail from './mail';
+import Mail from './Mail';
 
-export class Mailer {
+export default class Mailer {
 
     constructor(viewFactory, transportManager, mailOptions) {
         this.viewFactory        = viewFactory;

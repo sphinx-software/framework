@@ -15,6 +15,7 @@ export default {
         './../View',
         './../Storage',
         './../Cache',
+        './../Mail',
 
         // Application Module
         'Http'

@@ -1,4 +1,4 @@
-export class LogTransport {
+export default class LogTransport {
 
     constructor(logger) {
         this.logger = logger;

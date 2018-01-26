@@ -1,12 +1,12 @@
-import TransportManager from './transport-manager';
-import LogTransport from './log-transport';
-import Mailer from './mailer';
+import TransportManager from './TransportManager';
+import LogTransport from './LogTransport';
+import Mailer from './Mailer';
 import nodemailer from 'nodemailer';
 import lodash from 'lodash';
 import {provider} from "../Fusion/Fusion";
 
 @provider()
-export class mailProvider {
+export default class MailProvider {
     constructor(container, fusion) {
         this.container = container;
         this.fusion    = fusion;
@@ -16,7 +16,7 @@ export class mailProvider {
         this.container.singleton('mailer.transport', async () => {
             let config           = await this.container.make('config');
             let transportManager = new TransportManager();
-            let logger           = await this.container.make('log');
+            let logger           = await this.container.make('logger');
 
             lodash.forIn(config.mail.transports, (transportConfiguration, transportName) => {
                 if ('log' === transportConfiguration.service) {
