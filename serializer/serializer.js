@@ -1,10 +1,10 @@
-const VError = require('verror');
-const lodash = require('lodash');
+import VError from 'verror';
+import lodash from 'lodash';
 
 /**
  * Strategy based serializer
  */
-class Serializer {
+export class Serializer {
 
     /**
      *
@@ -129,4 +129,4 @@ class Serializer {
     }
 }
 
-module.exports = Serializer;
+
