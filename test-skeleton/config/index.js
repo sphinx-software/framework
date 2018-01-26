@@ -3,6 +3,7 @@ export default  {
     modules: [
         // Frameworks Module
         './../Http',
+        './../Hash',
         './../MetaInjector',
 
         // Application Module
@@ -14,5 +15,9 @@ export default  {
         middlewares: [
 
         ]
+    },
+
+    hash: {
+        rounds: 10
     }
 };
