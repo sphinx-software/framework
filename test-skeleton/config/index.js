@@ -10,6 +10,9 @@ export default  {
     ],
 
     http: {
-        port: process.env.HTTP_PORT || 8800
+        port: process.env.HTTP_PORT || 8800,
+        middlewares: [
+
+        ]
     }
 };

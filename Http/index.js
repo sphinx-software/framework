@@ -23,8 +23,13 @@ export class HttpServiceProvider {
 
     async boot() {
         let kernel = await this.container.make('http.kernel');
+        let config = await this.container.make('config');
 
         let middlewares = this.fusion.getByManifest('http.kernelMiddleware');
+
+        config.http.middlewares.forEach(middleware => {
+            kernel.use(middleware);
+        });
 
         for (let index = 0; index < middlewares.length; index++) {
             const Symbol   = middlewares[index];
@@ -67,9 +72,8 @@ export class HttpRouterServiceProvider {
             .filter(methodName => Reflect.hasMetadata('http.action', controller, methodName));
 
         for (let index = 0; index < controllerActionNames.length; index++) {
-            let actionName = controllerActionNames[index];
-            let metadata = Reflect.getMetadata('http.action', controller, actionName);
-
+            let actionName  = controllerActionNames[index];
+            let metadata    = Reflect.getMetadata('http.action', controller, actionName);
             let middlewares = await Promise.all(metadata.middlewares.map(middleware => this.container.make(middleware)));
 
             router[metadata.method](
@@ -88,7 +92,7 @@ export class HttpRouterServiceProvider {
     }
 }
 
-export function kernelMiddleware(value) {
+export function middleware(value) {
     return Reflect.metadata('http.kernelMiddleware', value);
 }
 

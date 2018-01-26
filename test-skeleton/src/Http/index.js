@@ -1,4 +1,4 @@
-import {kernelMiddleware, controller, get} from "../../../Http";
+import {controller, get} from "../../../Http";
 import {singleton} from "../../../MetaInjector";
 
 @singleton()
@@ -9,7 +9,6 @@ export class HelloMiddleware {
         await next();
     }
 }
-
 
 @singleton('config')
 @controller()
