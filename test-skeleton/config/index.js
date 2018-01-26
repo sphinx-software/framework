@@ -3,6 +3,8 @@ import winston from 'winston';
 import path    from 'path';
 import cache   from './cache';
 
+import SessionStartMiddleware from "../../Session/SessionStartMiddleware";
+
 export default {
 
     modules: [
@@ -19,6 +21,7 @@ export default {
         './../Timer',
         './../Mail',
         './../Console',
+        './../Session',
 
         // Application Module
         'Http',
@@ -34,7 +37,8 @@ export default {
 
         // Global middlewares
         middlewares : [
-
+            // Uncomment the middleware bellow to enable session service
+            // SessionStartMiddleware
         ],
     },
     cache,
@@ -98,5 +102,29 @@ export default {
 
     view: {
         directory: path.normalize(path.join(__dirname, '..', 'resources', 'views')),
+    },
+
+    session: {
+        use     : process.env.SESSION_ADAPTER || 'filesystem',
+        timeout : 1000 * 3600 * 24 * 30, // Set the session timeout for 30days
+
+        adapters: {
+            filesystem: {
+                prefix     : 'session',
+                directory  : path.normalize(path.join(__dirname, '..', 'storages', 'sessions')),
+            },
+
+            mongo: {
+                collection : 'sessions'
+            },
+
+            database: {
+                table      : 'sessions'
+            },
+            redis: {
+
+            },
+            memory: { }
+        }
     }
 };

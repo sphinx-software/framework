@@ -1,6 +1,6 @@
 import lodash from 'lodash';
 
-export class Mail {
+export default class Mail {
 
     /**
      *

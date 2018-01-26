@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import {provider} from "../Fusion/Fusion";
+import lodash from 'lodash';
 
 @provider()
 export class HttpServiceProvider {
@@ -26,7 +27,13 @@ export class HttpServiceProvider {
         let config = await this.container.make('config');
 
         config.http.middlewares.forEach(middleware => {
-            kernel.use(middleware);
+            if (lodash.isFunction(middleware.prototype.handle)) {
+                this.container.make(middleware).then(realMiddleware => {
+                    kernel.use( (context, next) => realMiddleware.handle(context, next));
+                })
+            } else {
+                kernel.use(middleware);
+            }
         });
 
         let middlewares = this.fusion.getByManifest('http.kernelMiddleware');
