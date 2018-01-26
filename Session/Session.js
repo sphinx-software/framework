@@ -1,9 +1,9 @@
-const lodash = require('lodash');
+import lodash from 'lodash';
 
 /**
  *
  */
-class Session {
+export default class Session {
 
     /**
      *
@@ -140,4 +140,3 @@ class Session {
     }
 }
 
-module.exports = Session;
