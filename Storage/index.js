@@ -2,7 +2,7 @@ import fs                        from 'fs';
 import path                      from 'path';
 import * as adapters             from './adapters';
 import { provider }              from '../Fusion/Fusion';
-import FactoryManager            from '../factory-manager';
+import FactoryManager            from '../FactoryManager';
 import CacheFileNamingConvention from './adapters/filesystem/storage-file-naming-convention';
 
 @provider()
