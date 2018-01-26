@@ -1,6 +1,6 @@
-import StorageAdapter from '../storage-adapter';
-import { promisify }  from 'util';
 import path           from 'path';
+import { promisify }  from 'util';
+import StorageAdapter from '../storage-adapter';
 
 export default class FileSystemAdapter extends StorageAdapter {
 
@@ -114,5 +114,3 @@ export default class FileSystemAdapter extends StorageAdapter {
 
     }
 }
-
-module.exports = FileSystemAdapter;

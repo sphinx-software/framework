@@ -1,15 +1,17 @@
-exports.expiredDateFrom = (date, ttl) => {
+const expiredDateFrom = (date, ttl) => {
     return new Date(date.getTime() + ttl);
 };
 
-exports.expiredDateFromNow = (ttl) => {
+const expiredDateFromNow = (ttl) => {
     return exports.expiredDateFrom(new Date(), ttl);
 };
 
-exports.isExpired = (expiredDate) => {
+const isExpired = (expiredDate) => {
     return Date.now() > expiredDate.getTime();
 };
 
-exports.isNotExpired = (expiredDate) => {
+const isNotExpired = (expiredDate) => {
     return !exports.isExpired(expiredDate);
 };
+
+export default { expiredDateFrom, expiredDateFromNow, isExpired, isNotExpired };
