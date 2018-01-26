@@ -1,4 +1,10 @@
-<h1>This is a view</h1>
+{% extends 'layouts/master' %}
 
+{% block title %}Welcome {{user}}{% endblock %}
 
-<h2>Reverse route: {{url.route('WelcomeController@foo')}}</h2>
+{% block content %}
+<div class="container-fluid">
+    <h1>Welcome {{user}}</h1>
+    <p>{{date}}</p>
+</div>
+{% endblock %}

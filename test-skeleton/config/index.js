@@ -2,7 +2,7 @@ import 'winston-daily-rotate-file';
 import winston from 'winston';
 import path    from 'path';
 import cache   from './cache';
-
+import koaStatic from 'koa-static';
 import SessionStartMiddleware from "../../Session/SessionStartMiddleware";
 
 export default {
@@ -30,13 +30,14 @@ export default {
     ],
 
     http: {
-        port        : process.env.HTTP_PORT   || 8800,
-        host        : process.env.HTTP_HOST   || 'localhost:8800',
+        port        : process.env.HTTP_PORT   || 3000,
+        host        : process.env.HTTP_HOST   || 'localhost:3000',
         secure      : process.env.HTTP_SECURE || false,
         asset       : '/',
 
         // Global middlewares
         middlewares : [
+            koaStatic(path.normalize(path.join(__dirname, '..', 'public')))
             // Uncomment the middleware bellow to enable session service
             // SessionStartMiddleware
         ],

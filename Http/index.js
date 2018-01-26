@@ -27,7 +27,7 @@ export class HttpServiceProvider {
         let config = await this.container.make('config');
 
         config.http.middlewares.forEach(middleware => {
-            if (lodash.isFunction(middleware.prototype.handle)) {
+            if (middleware.prototype && lodash.isFunction(middleware.prototype.handle)) {
                 this.container.make(middleware).then(realMiddleware => {
                     kernel.use( (context, next) => realMiddleware.handle(context, next));
                 })
