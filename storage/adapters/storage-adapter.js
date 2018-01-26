@@ -1,7 +1,7 @@
 /**
  * @interface
  */
-class StorageAdapter {
+export default class StorageAdapter {
     setDefaultTTL(defaultTTL) {
         throw new Error('Not Implemented');
     }
@@ -34,5 +34,3 @@ class StorageAdapter {
         throw new Error('Not Implemented');
     }
 }
-
-module.exports = StorageAdapter;

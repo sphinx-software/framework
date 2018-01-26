@@ -1,6 +1,6 @@
 const VError = require('verror');
 
-class FactoryManager {
+export default class FactoryManager {
     constructor(adapterFactories = {}) {
         this.factories = adapterFactories;
     }
@@ -20,5 +20,3 @@ class FactoryManager {
         return await factory(...factoryParameters);
     }
 }
-
-module.exports = FactoryManager;

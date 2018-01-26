@@ -5,6 +5,7 @@ export default  {
         './../Http',
         './../Hash',
         './../MetaInjector',
+        './../storage',
 
         // Application Module
         'Http'

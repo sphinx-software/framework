@@ -1,9 +1,10 @@
-const StorageAdapter = require('./storage-adapter');
+import StorageAdapter from './storage-adapter';
 
 /**
  * For failover purpose only
  */
-class NullStorageAdapter extends StorageAdapter {
+
+export default class NullStorageAdapter extends StorageAdapter {
 
     async getByTag(tag) {
         return [];
@@ -19,10 +20,13 @@ class NullStorageAdapter extends StorageAdapter {
     }
 
     async set(key, value, options = {}) { }
+
     async unset(key) { }
+
     async flush() { }
+
     async cleanup() { }
+
     async prepare() { }
 }
 
-module.exports = NullStorageAdapter;

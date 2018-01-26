@@ -1,11 +1,11 @@
-import {controller, get} from "../../../Http";
-import {singleton} from "../../../MetaInjector";
+import { controller, get } from '../../../Http';
+import { singleton }       from '../../../MetaInjector';
 
 @singleton()
 export class HelloMiddleware {
 
     async handle(context, next) {
-        context.body = {hello: 'world'};
+        context.body = { hello: 'world' };
         await next();
     }
 }

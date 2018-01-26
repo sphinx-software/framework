@@ -1,7 +1,6 @@
-const StorageAdapter = require('./../storage-adapter');
-
-const lodash         = require('lodash');
-const utils          = require('./../utils');
+import lodash         from 'lodash';
+import utils          from '../utils';
+import StorageAdapter from '../storage-adapter';
 
 /**
  * For development & testing purpose only.
@@ -9,7 +8,7 @@ const utils          = require('./../utils');
  *
  * @class
  */
-class MemoryStorageAdapter extends StorageAdapter {
+export default class MemoryStorageAdapter extends StorageAdapter {
 
     /**
      *
@@ -45,11 +44,9 @@ class MemoryStorageAdapter extends StorageAdapter {
      * @return {Promise.<*>}
      */
     async getByTag(tag) {
-        return this.loadStore()
-            .filter(item => {
-                return lodash.includes(item['tags'], tag)
-            })
-            .map(item => item['value']);
+        return this.loadStore().filter(item => {
+            return lodash.includes(item['tags'], tag);
+        }).map(item => item['value']);
     }
 
     /**
@@ -59,7 +56,8 @@ class MemoryStorageAdapter extends StorageAdapter {
      * @return {Promise.<*>}
      */
     async get(key, valueIfNotExisted = null) {
-        return (lodash.find(this.loadStore(), item => item.key === key) || {value: valueIfNotExisted}).value;
+        return (lodash.find(this.loadStore(), item => item.key === key) ||
+            { value: valueIfNotExisted }).value;
     }
 
     /**
@@ -71,11 +69,11 @@ class MemoryStorageAdapter extends StorageAdapter {
      */
     async set(key, value, options = {}) {
         this.store.push({
-            key         : key,
-            value       : value,
-            tags        : options.tags || [],
-            expiredAt   : utils.expiredDateFromNow(options.ttl || this.defaultTTL)
-        })
+            key      : key,
+            value    : value,
+            tags     : options.tags || [],
+            expiredAt: utils.expiredDateFromNow(options.ttl || this.defaultTTL)
+        });
     }
 
     /**
@@ -109,5 +107,3 @@ class MemoryStorageAdapter extends StorageAdapter {
      */
     async prepare() { }
 }
-
-module.exports = MemoryStorageAdapter;
