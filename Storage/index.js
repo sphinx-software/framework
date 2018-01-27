@@ -4,6 +4,7 @@ import * as adapters             from './adapters';
 import { provider }              from '../Fusion/Fusion';
 import FactoryManager            from '../FactoryManager';
 import CacheFileNamingConvention from './adapters/filesystem/StorageFileNamingConvention';
+import {SerializerInterface} from "../Fusion/ServiceContracts";
 
 @provider()
 export class StorageServiceProvider {
@@ -23,7 +24,7 @@ export class StorageServiceProvider {
 
                 'filesystem': async (adapterConfiguration) => {
                     return new adapters.FilesystemStorageAdapter(
-                        await this.container.make('serializer'),
+                        await this.container.make(SerializerInterface),
                         fs,
                         new CacheFileNamingConvention().setPrefix(
                             adapterConfiguration.prefix)

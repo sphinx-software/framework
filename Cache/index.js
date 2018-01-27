@@ -1,5 +1,6 @@
 import FactoryManager from '../FactoryManager';
 import { provider }   from '../Fusion/Fusion';
+import {CacheInterface} from "../Fusion/ServiceContracts";
 
 @provider()
 export class CacheServiceProvider {
@@ -10,7 +11,7 @@ export class CacheServiceProvider {
     }
 
     register() {
-        this.container.singleton('cache', async () => {
+        this.container.singleton(CacheInterface, async () => {
             let storageFactory = await this.container.make(FactoryManager);
             let config         = await this.container.make('config');
 

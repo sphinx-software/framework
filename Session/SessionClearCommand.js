@@ -1,8 +1,9 @@
 import {singleton} from "../MetaInjector";
 import {command} from "../Console";
+import {SessionStorageInterface} from "../Fusion/ServiceContracts";
 
 
-@singleton('session.storage')
+@singleton(SessionStorageInterface)
 @command('session:clear', 'Flushes all the session of the server')
 export default class SessionClearCommand {
 

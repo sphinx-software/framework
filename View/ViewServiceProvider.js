@@ -1,6 +1,7 @@
 import {EventEmitter} from 'events';
 import ViewFactory from './ViewFactory';
 import {provider} from "../Fusion/Fusion";
+import {ViewFactoryInterface} from "../Fusion/ServiceContracts";
 
 @provider()
 export default class ViewServiceProvider {
@@ -10,14 +11,14 @@ export default class ViewServiceProvider {
     }
 
     register() {
-        this.container.singleton('view', async () => {
+        this.container.singleton(ViewFactoryInterface, async () => {
             let engine = await this.container.make('view.engine');
             return new ViewFactory(new EventEmitter(), engine);
         });
     }
 
     async boot() {
-        let viewFactory = await this.container.make('view');
+        let viewFactory = await this.container.make(ViewFactoryInterface);
 
         let viewRenderingMacros = this.fusion.getByManifest('view.decorator.rendering');
 

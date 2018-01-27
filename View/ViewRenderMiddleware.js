@@ -1,8 +1,9 @@
 import View from './View';
 import {middleware} from "../Http";
 import {singleton} from "../MetaInjector";
+import {ViewFactoryInterface} from "../Fusion/ServiceContracts";
 
-@singleton('view')
+@singleton(ViewFactoryInterface)
 @middleware()
 export default class ViewRenderMiddleware {
 

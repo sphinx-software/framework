@@ -1,6 +1,7 @@
 import Session from './Session';
 import {provider} from "../Fusion/Fusion";
 import FactoryManager from "../FactoryManager";
+import {SerializerInterface, SessionStorageInterface} from "../Fusion/ServiceContracts";
 
 
 export SessionClearCommand from "./SessionClearCommand";
@@ -14,7 +15,7 @@ export default class SessionProvider {
     }
 
     register() {
-        this.container.singleton('session.storage', async () => {
+        this.container.singleton(SessionStorageInterface, async () => {
 
             let factory = await this.container.make(FactoryManager);
             let config  = await this.container.make('config');
@@ -27,7 +28,7 @@ export default class SessionProvider {
     }
 
     async boot() {
-        let serializer = await this.container.make('serializer');
+        let serializer = await this.container.make(SerializerInterface);
 
         // Let serializer know how to serialize / deserialize Session data
         serializer.forType(

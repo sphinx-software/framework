@@ -2,6 +2,7 @@
  * URL Helper. This will generate fully-qualified url
  */
 import {provider} from "../Fusion/Fusion";
+import {ViewFactoryInterface} from "../Fusion/ServiceContracts";
 
 class Url {
 
@@ -106,7 +107,7 @@ export class UrlServiceProvider {
     }
 
     register() {
-        this.container.singleton('url', async () => {
+        this.container.singleton(Url, async () => {
             let router = await this.container.make('http.router');
             let config = await this.container.make('config');
 
@@ -115,7 +116,7 @@ export class UrlServiceProvider {
     }
 
     async boot() {
-        let view = await this.container.make('view');
-        view.global('url', await this.container.make('url'));
+        let view = await this.container.make(ViewFactoryInterface);
+        view.global('url', await this.container.make(Url));
     }
 }

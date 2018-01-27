@@ -1,8 +1,9 @@
 import Session from './Session';
 import uuid from 'uuid/v4';
 import {singleton} from "./../MetaInjector";
+import {SerializerInterface, SessionStorageInterface} from "../Fusion/ServiceContracts";
 
-@singleton('config', 'session.storage')
+@singleton('config', SessionStorageInterface)
 export default class SessionStartMiddleware {
     constructor(config, sessionStorage) {
         this.config = config;
@@ -17,13 +18,13 @@ export default class SessionStartMiddleware {
         // if no session was found, then give it a new one
         context.session = await this.storage.get(
             sessionID,
-            new Session(await container.make('serializer'))
+            new Session(await container.make(SerializerInterface))
         );
 
         if(context.session.isTimeout(this.config.session.timeout)) {
             // Make a new session with a new session id
             sessionID = uuid();
-            context.session = new Session(await container.make('serializer'));
+            context.session = new Session(await container.make(SerializerInterface));
         }
 
         await next();

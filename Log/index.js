@@ -1,5 +1,6 @@
 import winston from 'winston';
 import {provider} from "../Fusion/Fusion";
+import {LoggerInterface} from "../Fusion/ServiceContracts";
 
 @provider()
 export default class LogServiceProvider {
@@ -8,7 +9,7 @@ export default class LogServiceProvider {
     }
 
     register() {
-        this.container.singleton('logger', async () => {
+        this.container.singleton(LoggerInterface, async () => {
 
             let config = await this.container.make('config');
 
