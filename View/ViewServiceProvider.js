@@ -17,7 +17,7 @@ export default class ViewServiceProvider {
     }
 
     async boot() {
-        let viewFactory = this.container.make('view');
+        let viewFactory = await this.container.make('view');
 
         let viewRenderingMacros = this.fusion.getByManifest('view.decorator.rendering');
 
