@@ -25,14 +25,14 @@ export default class ViewServiceProvider {
             let templateName = Reflect.getMetadata('view.decorator.rendering', Macro);
             let macro        = await this.container.make(Macro);
 
-            viewFactory.rendering(templateName, (...arguments) => macro.run(arguments));
+            viewFactory.rendering(templateName, (...parameters) => macro.run(...parameters));
         });
 
         viewRenderingMacros.map(async Macro => {
             let templateName = Reflect.getMetadata('view.decorator.making', Macro);
             let macro        = await this.container.make(Macro);
 
-            viewFactory.making(templateName, (...arguments) => macro.run(arguments));
+            viewFactory.making(templateName, (...parameters) => macro.run(...parameters));
         });
     }
 }
