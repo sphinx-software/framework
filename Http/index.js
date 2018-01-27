@@ -68,9 +68,7 @@ export class HttpRouterServiceProvider {
         let controllers = this.fusion.getByManifest('http.controller');
         let router      = await this.container.make(HttpRouter);
 
-        for (let index = 0; index < controllers.length; index++) {
-            await this.bindController(router, controllers[index]);
-        }
+        await controllers.map(Controller => this.bindController(router, Controller));
     }
 
     async bindController(router, Controller) {
