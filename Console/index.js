@@ -1,6 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import {provider} from "../Fusion/Fusion";
+import {ConsoleKernel} from "../Fusion/ServiceContracts";
 
 class Verbosity {
     constructor(level) {
@@ -57,7 +58,7 @@ export default class ConsoleServiceProvider {
 
     register() {
         this.container.value(
-            'console.kernel',
+            ConsoleKernel,
             program
                 .version(fs.readFileSync(__dirname + '/header.txt', {encoding: 'utf-8'}))
                 .option('-v, --verbose', 'set the output verbosity', (v, total) => total + 1, 0)
@@ -66,7 +67,7 @@ export default class ConsoleServiceProvider {
 
     async boot() {
         let commands = this.fusion.getByManifest('console.command');
-        let kernel   = await this.container.make('console.kernel');
+        let kernel   = await this.container.make(ConsoleKernel);
 
         for (let index = 0; index < commands.length; index++) {
             await this.appendCommand(kernel, commands[index]);

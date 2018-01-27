@@ -2,6 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import {provider} from "../Fusion/Fusion";
 import lodash from 'lodash';
+import {HttpKernel, HttpRouter} from "../Fusion/ServiceContracts";
 
 @provider()
 export class HttpServiceProvider {
@@ -12,7 +13,7 @@ export class HttpServiceProvider {
     }
 
     register() {
-        this.container.singleton('http.kernel', async () => {
+        this.container.singleton(HttpKernel, async () => {
             let kernel = new Koa();
 
             return kernel.use(async (ctx, next) => {
@@ -23,7 +24,7 @@ export class HttpServiceProvider {
     }
 
     async boot() {
-        let kernel = await this.container.make('http.kernel');
+        let kernel = await this.container.make(HttpKernel);
         let config = await this.container.make('config');
 
         config.http.middlewares.forEach(middleware => {
@@ -56,7 +57,7 @@ export class HttpRouterServiceProvider {
     }
 
     register() {
-        this.container.singleton('http.router', async () => {
+        this.container.singleton(HttpRouter, async () => {
             let config = await this.container.make('config');
 
             return new Router(config.http.router);
@@ -65,7 +66,7 @@ export class HttpRouterServiceProvider {
 
     async boot() {
         let controllers = this.fusion.getByManifest('http.controller');
-        let router      = await this.container.make('http.router');
+        let router      = await this.container.make(HttpRouter);
 
         for (let index = 0; index < controllers.length; index++) {
             await this.bindController(router, controllers[index]);

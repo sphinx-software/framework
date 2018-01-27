@@ -1,9 +1,9 @@
 import fs                        from 'fs';
 import path                      from 'path';
-import * as adapters             from './adapters';
+import * as adapters             from './Adapter';
 import { provider }              from '../Fusion/Fusion';
 import FactoryManager            from '../FactoryManager';
-import CacheFileNamingConvention from './adapters/filesystem/StorageFileNamingConvention';
+import CacheFileNamingConvention from './Adapter/Filesystem/StorageFileNamingConvention';
 import {SerializerInterface} from "../Fusion/ServiceContracts";
 
 @provider()

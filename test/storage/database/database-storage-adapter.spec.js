@@ -8,9 +8,9 @@ const knex   = require('knex')({
     }
 });
 
-const DatabaseStorageAdapter     = require('../../../storage/adapters/database/database-storage-adapter');
-const DatabaseTaggingStrategy    = require('../../../storage/adapters/database/database-tagging-strategy');
-const DatabaseExpirationStrategy = require('../../../storage/adapters/database/database-expiration-strategy');
+const DatabaseStorageAdapter     = require('../../../Storage/Adapter/database/database-storage-adapter');
+const DatabaseTaggingStrategy    = require('../../../Storage/Adapter/database/database-tagging-strategy');
+const DatabaseExpirationStrategy = require('../../../Storage/Adapter/database/database-expiration-strategy');
 
 
 describe('DatabaseStorageAdapter test suite', () => {

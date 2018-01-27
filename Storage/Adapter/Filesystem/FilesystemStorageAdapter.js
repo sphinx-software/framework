@@ -1,8 +1,7 @@
 import path           from 'path';
 import { promisify }  from 'util';
-import StorageAdapter from '../StorageAdapter';
 
-export default class FileSystemAdapter extends StorageAdapter {
+export default class FileSystemAdapter {
 
     /**
      *
@@ -11,7 +10,6 @@ export default class FileSystemAdapter extends StorageAdapter {
      * @param {StorageFileNamingConvention} naming
      */
     constructor(serializer, filesystem, naming) {
-        super();
         this.serializer = serializer;
         this.filesystem = filesystem;
         this.naming     = naming;

@@ -1,6 +1,5 @@
 import lodash         from 'lodash';
 import utils          from '../utils';
-import StorageAdapter from '../StorageAdapter';
 
 /**
  * For development & testing purpose only.
@@ -8,14 +7,13 @@ import StorageAdapter from '../StorageAdapter';
  *
  * @class
  */
-export default class MemoryStorageAdapter extends StorageAdapter {
+export default class MemoryStorageAdapter {
 
     /**
      *
      * @param {[{key: string, tags: [], value: *}]} initialData
      */
     constructor(initialData) {
-        super();
         this.store = initialData;
     }
 

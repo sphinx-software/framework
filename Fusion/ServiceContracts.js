@@ -155,6 +155,7 @@ export class ViewFactoryInterface {
     make(template, data = {}) { }
 }
 
+
 /**
  * The universal interface for serializer service
  */
@@ -168,3 +169,13 @@ export class SerializerInterface {
      */
     forType(type, serializeFunction, deserializeFunction) { }
 }
+
+export const Config = 'config';
+
+export const HttpKernel = 'http.kernel';
+
+export const HttpRouter = 'http.router';
+
+export const ConsoleKernel = 'console.kernel';
+
+export const SocketKernel = 'socket.kernel';

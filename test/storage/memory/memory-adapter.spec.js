@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const MemoryStorage = require('../../../Storage/adapters/memory/MemoryStorageAdapter');
+const MemoryStorage = require('../../../Storage/Adapter/Memory/MemoryStorageAdapter');
 
 describe('MemoryStorageAdapter test suite', () => {
     let storage = null;

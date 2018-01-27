@@ -1,10 +1,7 @@
-import StorageAdapter from './StorageAdapter';
-
 /**
  * For failover purpose only
  */
-
-export default class NullStorageAdapter extends StorageAdapter {
+export default class NullStorageAdapter {
 
     async getByTag(tag) {
         return [];
