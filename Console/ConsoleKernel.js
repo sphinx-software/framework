@@ -17,6 +17,7 @@ export default class ConsoleKernel {
 
     onError(handler) {
         this.eventEmitter.on('console-kernel.error', handler);
+        return this;
     }
 
     async registerCommand(container, Command) {
