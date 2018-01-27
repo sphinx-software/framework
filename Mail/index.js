@@ -4,7 +4,7 @@ import Mailer from './Mailer';
 import nodemailer from 'nodemailer';
 import lodash from 'lodash';
 import {provider} from "../Fusion/Fusion";
-import {LoggerInterface, MailerInterface, ViewFactoryInterface} from "../Fusion/ServiceContracts";
+import {Config, LoggerInterface, MailerInterface, ViewFactoryInterface} from "../Fusion/ServiceContracts";
 
 @provider()
 export default class MailProvider {
@@ -15,7 +15,7 @@ export default class MailProvider {
 
     register() {
         this.container.singleton('mailer.transport', async () => {
-            let config           = await this.container.make('config');
+            let config           = await this.container.make(Config);
             let transportManager = new TransportManager();
             let logger           = await this.container.make(LoggerInterface);
 
@@ -31,7 +31,7 @@ export default class MailProvider {
         });
 
         this.container.singleton(MailerInterface, async () => {
-            let config = await this.container.make('config');
+            let config = await this.container.make(Config);
             return new Mailer(
                 await this.container.make(ViewFactoryInterface),
                 await this.container.make('mailer.transport'),

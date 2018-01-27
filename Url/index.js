@@ -1,9 +1,9 @@
+import {provider} from "../Fusion/Fusion";
+import {Config, HttpRouter, ViewFactoryInterface} from "../Fusion/ServiceContracts";
+
 /**
  * URL Helper. This will generate fully-qualified url
  */
-import {provider} from "../Fusion/Fusion";
-import {ViewFactoryInterface} from "../Fusion/ServiceContracts";
-
 class Url {
 
     /**
@@ -108,8 +108,8 @@ export class UrlServiceProvider {
 
     register() {
         this.container.singleton(Url, async () => {
-            let router = await this.container.make('http.router');
-            let config = await this.container.make('config');
+            let router = await this.container.make(HttpRouter);
+            let config = await this.container.make(Config);
 
             return new Url(router).setHost(config.http.host).setAssetsPath(config.http.asset).secure(config.http.secure);
         });

@@ -1,4 +1,5 @@
 import lodash from 'lodash';
+import {Config} from "./ServiceContracts";
 
 export class Fusion {
     constructor() {
@@ -19,7 +20,7 @@ export class Fusion {
 
     async activate(config, container) {
 
-        container.value('config', config);
+        container.value(Config, config);
         container.value(Fusion, fusion);
 
         let providers = this.getByManifest('fusion.provider').map(Provider => new Provider(container, fusion));

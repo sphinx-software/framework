@@ -2,7 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import {provider} from "../Fusion/Fusion";
 import lodash from 'lodash';
-import {HttpKernel, HttpRouter} from "../Fusion/ServiceContracts";
+import {Config, HttpKernel, HttpRouter} from "../Fusion/ServiceContracts";
 
 @provider()
 export class HttpServiceProvider {
@@ -25,7 +25,7 @@ export class HttpServiceProvider {
 
     async boot() {
         let kernel = await this.container.make(HttpKernel);
-        let config = await this.container.make('config');
+        let config = await this.container.make(Config);
 
         config.http.middlewares.forEach(middleware => {
             if (middleware.prototype && lodash.isFunction(middleware.prototype.handle)) {
@@ -58,7 +58,7 @@ export class HttpRouterServiceProvider {
 
     register() {
         this.container.singleton(HttpRouter, async () => {
-            let config = await this.container.make('config');
+            let config = await this.container.make(Config);
 
             return new Router(config.http.router);
         });

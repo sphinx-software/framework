@@ -1,8 +1,7 @@
 import Session from './Session';
 import {provider} from "../Fusion/Fusion";
 import FactoryManager from "../FactoryManager";
-import {SerializerInterface, SessionStorageInterface} from "../Fusion/ServiceContracts";
-
+import {Config, SerializerInterface, SessionStorageInterface} from "../Fusion/ServiceContracts";
 
 export SessionClearCommand from "./SessionClearCommand";
 export SessionStartMiddleware from "./SessionStartMiddleware";
@@ -18,7 +17,7 @@ export default class SessionProvider {
         this.container.singleton(SessionStorageInterface, async () => {
 
             let factory = await this.container.make(FactoryManager);
-            let config  = await this.container.make('config');
+            let config  = await this.container.make(Config);
 
             let sessionConfig = config.session;
             let adapterConfig = sessionConfig.adapters[sessionConfig.use];
