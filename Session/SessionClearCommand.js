@@ -1,5 +1,5 @@
 import {singleton} from "../MetaInjector";
-import {command} from "../Console";
+import {command} from "../Console/index";
 import {SessionStorageInterface} from "../Fusion/ServiceContracts";
 
 

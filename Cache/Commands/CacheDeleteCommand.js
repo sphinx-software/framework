@@ -1,4 +1,4 @@
-import {args, command} from "../../Console";
+import {args, command} from "../../Console/index";
 import {singleton} from "../../MetaInjector";
 import {CacheInterface} from "../../Fusion/ServiceContracts";
 import chalk from 'chalk';
