@@ -1,5 +1,3 @@
-import Verbosity from "./Verbosity";
-import IO from "./IO";
 
 /**
  * The ConsoleKernel for console application, wrapper of "tj/commander".
@@ -11,11 +9,9 @@ export default class ConsoleKernel {
     /**
      *
      * @param commander
-     * @param {EventEmitter} eventEmitter
      */
-    constructor(commander, eventEmitter) {
-        this.commander      = commander;
-        this.eventEmitter   = eventEmitter;
+    constructor(commander) {
+        this.commander  = commander;
     }
 
     /**
@@ -40,12 +36,36 @@ export default class ConsoleKernel {
 
     /**
      *
-     * @param {Function} handler
-     * @return {ConsoleKernel}
+     * @param commandRegistra
+     * @param command
      */
-    onError(handler) {
-        this.eventEmitter.on('console-kernel.error', handler);
-        return this;
+    decorateOptions(commandRegistra, command) {
+
+        let optionProperties = Object
+            .getOwnPropertyNames(command)
+            .filter(propertyName => Reflect.hasMetadata('console.command.option', command, propertyName))
+        ;
+
+        optionProperties.forEach(optionName => {
+            let optionMetadata = Reflect.getMetadata('console.command.option', command, optionName);
+
+            commandRegistra.option(
+                optionMetadata.name,
+                optionMetadata.description,
+                optionValue => command[optionName] = optionMetadata.formatter(optionValue)
+            )
+        });
+    }
+
+    /**
+     *
+     * @param commandRegistra
+     * @param command
+     */
+    decorateArguments(commandRegistra, command) {
+        if(Reflect.hasMetadata('console.command.argument', command, 'action')) {
+            commandRegistra.arguments(Reflect.getMetadata('console.command.argument', command, 'action'));
+        }
     }
 
     /**
@@ -60,23 +80,14 @@ export default class ConsoleKernel {
 
         commandRegistra.description(commandMetadata.description);
 
-        if (Reflect.hasMetadata('console.command.options', Command)) {
-            Reflect.getMetadata('console.command.options', Command).forEach(option => commandRegistra.option(...option))
-        }
-
-        if (Reflect.hasMetadata('console.command.arguments', Command)) {
-            commandRegistra.arguments(Reflect.getMetadata('console.command.arguments', Command));
-        }
-
         let command = await container.make(Command);
+
+        this.decorateOptions(commandRegistra, command);
+        this.decorateArguments(commandRegistra, command);
 
         commandRegistra.action(() => {
             this.executedCommand = true;
-            command.context = commandRegistra;
-            command.io      = new IO(new Verbosity(this.commander.verbose || 0));
-            this.commandPromise = command
-                .action(...this.commander.args)
-                .catch( error => this.eventEmitter.emit('console-kernel.error', error, command));
-        })
+            this.commandPromise  = command.action(...this.commander.args)
+        });
     }
 }

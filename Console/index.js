@@ -5,9 +5,11 @@ export function command(name, description = '') {
 }
 
 export function args(args) {
-    return Reflect.metadata('console.command.arguments', args);
+    return Reflect.metadata('console.command.argument', args);
 }
 
-export function options(...options) {
-    return Reflect.metadata('console.command.options', options);
+export function option(name, description, formatter) {
+    return Reflect.metadata('console.command.option', {
+        name: name, description: description, formatter: formatter
+    });
 }

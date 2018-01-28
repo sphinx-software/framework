@@ -160,6 +160,7 @@ export class ViewFactoryInterface {
  * The universal interface for serializer service
  */
 export class SerializerInterface {
+
     /**
      *
      * @param {constructor|string} type the class type that should be serialized or its name
@@ -168,6 +169,14 @@ export class SerializerInterface {
      * @return {Serializer}
      */
     forType(type, serializeFunction, deserializeFunction) { }
+}
+
+export class DatabaseConnectionInterface {
+    // todo
+}
+
+export class DatabaseInterface {
+    // todo
 }
 
 export const Config = 'config';

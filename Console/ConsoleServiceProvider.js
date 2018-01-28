@@ -15,18 +15,13 @@ export default class ConsoleServiceProvider {
 
     register() {
 
-        this.container.singleton(Kernel, async () => {
-            let eventEmitter = await this.container.make('events');
-            return new ConsoleKernel(
-                program
-                    .version(
-                        `Fusion framework ${chalk.yellow('v' + packageJson.version)}\n` +
-                        chalk.gray(`a product of Sphinx Software™, ${new Date().getFullYear()}`)
-                    )
-                    .option('-v, --verbose', 'set the output verbosity', (v, total) => total + 1, 0),
-                eventEmitter
-            )
-        });
+        this.container.value(Kernel, new ConsoleKernel(
+            program
+                .version(
+                    `Fusion framework ${chalk.yellow('v' + packageJson.version)}\n` +
+                    chalk.gray(`a product of Sphinx Software™, ${new Date().getFullYear()}`))
+                .option('-v, --verbose', 'set the output verbosity', (v, total) => total + 1, 0)
+        ));
     }
 
     async boot() {
