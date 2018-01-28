@@ -1,5 +1,3 @@
-import VError from "verror";
-
 /**
  * The universal interface for logger
  */
@@ -57,9 +55,54 @@ export class LoggerInterface {
 }
 
 /**
+ * The universal interface for storage adapter
+ */
+export class StorageAdapterInterface {
+    /**
+     *
+     * @param {string} key
+     * @param {*} valueIfNotExisted
+     * @return {Promise.<*>}
+     */
+    async get(key, valueIfNotExisted = null) { }
+
+    /**
+     *
+     * @param {string} key
+     * @param {*} value
+     * @param {*} options
+     * @return {Promise.<void>}
+     */
+    async set(key, value, options) { }
+
+    /**
+     *
+     * @param {string} key
+     * @return {Promise.<void>}
+     */
+    async unset(key) { }
+
+    async flush() { }
+}
+
+/**
+ * The universal interface for storage adapter factory
+ */
+export class StorageAdapterFactoryInterface {
+
+    /**
+     *
+     * @param {*} config
+     * @return {StorageAdapterInterface}
+     */
+    make(config) { }
+}
+
+
+/**
  * The universal interface for cache service
  */
-export class CacheInterface {
+export class CacheInterface extends StorageAdapterFactoryInterface {
 
     /**
      *
@@ -89,7 +132,7 @@ export class CacheInterface {
 /**
  * The universal interface for session storage
  */
-export class SessionStorageInterface {
+export class SessionStorageInterface extends StorageAdapterInterface {
 
     /**
      *
