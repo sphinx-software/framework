@@ -51,7 +51,7 @@ export default class ConsoleKernel {
     /**
      *
      * @param {Container} container
-     * @param {{action: Function}} Command
+     * @param {} Command
      * @return {Promise<void>}
      */
     async registerCommand(container, Command) {
