@@ -7,12 +7,14 @@ export default class ConsoleKernel {
         this.eventEmitter   = eventEmitter;
     }
 
-    handle(argv) {
+    async handle(argv) {
         this.commander.parse(argv);
 
         if (this.commander.args.length === 0) {
             this.commander.help();
         }
+
+        await this.commandPromise;
     }
 
     onError(handler) {
@@ -38,8 +40,8 @@ export default class ConsoleKernel {
 
         commandRegistra.action(() => {
             command.context = commandRegistra;
-            command.io = new IO(new Verbosity(this.commander.verbose || 0));
-            command
+            command.io      = new IO(new Verbosity(this.commander.verbose || 0));
+            this.commandPromise = command
                 .action(...this.commander.args)
                 .catch( error => this.eventEmitter.emit('console-kernel.error', error, command));
         })

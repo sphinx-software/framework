@@ -28,6 +28,6 @@ export default class ConsoleServiceProvider {
         let commands = this.fusion.getByManifest('console.command');
         let kernel   = await this.container.make(Kernel);
 
-        await commands.map(Command => kernel.registerCommand(this.container, Command));
+        await Promise.all(commands.map(Command => kernel.registerCommand(this.container, Command)));
     }
 }
