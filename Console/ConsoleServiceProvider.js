@@ -8,11 +8,19 @@ import chalk from "chalk";
 @provider()
 export default class ConsoleServiceProvider {
 
+    /**
+     *
+     * @param {Container} container
+     * @param {Fusion} fusion
+     */
     constructor(container, fusion) {
         this.container = container;
         this.fusion    = fusion;
     }
 
+    /**
+     *
+     */
     register() {
 
         this.container.value(Kernel, new ConsoleKernel(
@@ -24,6 +32,10 @@ export default class ConsoleServiceProvider {
         ));
     }
 
+    /**
+     *
+     * @return {Promise<void>}
+     */
     async boot() {
         let commands = this.fusion.getByManifest('console.command');
         let kernel   = await this.container.make(Kernel);

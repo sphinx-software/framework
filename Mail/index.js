@@ -8,11 +8,18 @@ import {Config, LoggerInterface, MailerInterface, ViewFactoryInterface} from "..
 
 @provider()
 export default class MailProvider {
-    constructor(container, fusion) {
+
+    /**
+     *
+     * @param container
+     */
+    constructor(container) {
         this.container = container;
-        this.fusion    = fusion;
     }
 
+    /**
+     *
+     */
     register() {
         this.container.singleton('mailer.transport', async () => {
             let config           = await this.container.make(Config);

@@ -8,7 +8,7 @@ export default class ConsoleKernel {
 
     /**
      *
-     * @param commander
+     * @param {commander} commander
      */
     constructor(commander) {
         this.commander  = commander;
@@ -16,7 +16,7 @@ export default class ConsoleKernel {
 
     /**
      *
-     * @param argv
+     * @param {Array} argv
      * @return {Promise<void | *>}
      */
     async handle(argv) {

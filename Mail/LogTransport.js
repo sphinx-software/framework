@@ -1,5 +1,9 @@
 export default class LogTransport {
 
+    /**
+     *
+     * @param {LoggerInterface} logger
+     */
     constructor(logger) {
         this.logger = logger;
     }

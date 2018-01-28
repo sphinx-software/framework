@@ -7,44 +7,51 @@ export class LoggerInterface {
      *
      * @param {string|number}level
      * @param {string} message
+     * @param {*} context
      */
-    log(level, message) { }
+    log(level, message, context) { }
 
     /**
      *
      * @param {string} message
+     * @param {*} context
      */
-    error(message) { }
+    error(message, context) { }
 
     /**
      *
      * @param {string} message
+     * @param {*} context
      */
-    warn(message) { }
+    warn(message, context) { }
 
     /**
      *
      * @param {string} message
+     * @param {*} context
      */
-    info(message) { }
+    info(message, context) { }
 
     /**
      *
      * @param {string} message
+     * @param {*} context
      */
-    verbose(message) { }
+    verbose(message, context) { }
 
     /**
      *
      * @param {string} message
+     * @param {*} context
      */
-    debug(message) { }
+    debug(message, context) { }
 
     /**
      *
      * @param {string} message
+     * @param {*} context
      */
-    silly(message) { }
+    silly(message, context) { }
 }
 
 /**

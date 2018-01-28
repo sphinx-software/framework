@@ -4,6 +4,11 @@ import {Config, LoggerInterface} from "../Fusion/ServiceContracts";
 
 @provider()
 export default class LogServiceProvider {
+
+    /**
+     *
+     * @param {Container} container
+     */
     constructor(container) {
         this.container = container;
     }
