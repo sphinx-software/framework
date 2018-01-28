@@ -5,7 +5,7 @@ import chalk from 'chalk';
 
 @singleton(CacheInterface)
 @command('cache:has', 'Checks if cache has the given key')
-export default class CacheGetCommand {
+export default class CacheHasCommand {
     constructor(cache) {
         this.cache = cache;
     }
