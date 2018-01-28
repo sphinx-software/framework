@@ -1,33 +1,25 @@
 import Convention from "./StorageFileNamingConvention";
 import Adapter from "./FilesystemStorageAdapter";
+import {singleton} from "../../MetaInjector";
+import {factory} from "../decorators";
+import {SerializerInterface} from "../../Fusion/ServiceContracts";
 
+@singleton(SerializerInterface)
+@factory('filesystem')
 export default class FilesystemStorageAdapterFactory {
 
     /**
      *
      * @param {SerializerInterface} serializer
-     * @return {FilesystemStorageAdapterFactory}
      */
-    setSerializer(serializer) {
+    constructor(serializer) {
         this.serializer = serializer;
-        return this;
     }
 
-    /**
-     *
-     * @param { {prefix: String, directory: string} }config
-     * @return {FilesystemStorageAdapterFactory}
-     */
-    setConfig(config) {
-        this.config = config;
-
-        return this;
-    }
-
-    make() {
+    make(config) {
         return new Adapter(
             this.serializer,
-            new Convention().setPrefix(this.config.prefix)
-        ).setStorageDirectory(this.config.directory);
+            new Convention().setPrefix(config.prefix)
+        ).setStorageDirectory(config.directory);
     }
 }

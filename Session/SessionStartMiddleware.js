@@ -1,9 +1,9 @@
 import Session from './Session';
 import uuid from 'uuid/v4';
 import {singleton} from "./../MetaInjector";
-import {SerializerInterface, SessionStorageInterface} from "../Fusion/ServiceContracts";
+import {Config, SerializerInterface, SessionStorageInterface} from "../Fusion/ServiceContracts";
 
-@singleton('config', SessionStorageInterface)
+@singleton(Config, SessionStorageInterface)
 export default class SessionStartMiddleware {
     constructor(config, sessionStorage) {
         this.config = config;
