@@ -1,6 +1,6 @@
 import Session from './Session';
 import {provider} from "../Fusion/Fusion";
-import FactoryManager from "../FactoryManager";
+import FactoryManager from "../Manager";
 import {Config, SerializerInterface, SessionStorageInterface} from "../Fusion/ServiceContracts";
 
 export SessionClearCommand from "./SessionClearCommand";

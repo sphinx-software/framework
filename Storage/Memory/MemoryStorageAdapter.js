@@ -5,7 +5,6 @@ import utils          from '../utils';
  * For development & testing purpose only.
  * Do not use this adapter in your production environment
  *
- * @class
  */
 export default class MemoryStorageAdapter {
 
@@ -54,8 +53,7 @@ export default class MemoryStorageAdapter {
      * @return {Promise.<*>}
      */
     async get(key, valueIfNotExisted = null) {
-        return (lodash.find(this.loadStore(), item => item.key === key) ||
-            { value: valueIfNotExisted }).value;
+        return (lodash.find(this.loadStore(), item => item.key === key) || { value: valueIfNotExisted }).value;
     }
 
     /**
@@ -98,10 +96,4 @@ export default class MemoryStorageAdapter {
     async cleanup() {
         this.store = this.loadStore();
     }
-
-    /**
-     *
-     * @return {Promise.<void>}
-     */
-    async prepare() { }
 }

@@ -1,3 +1,5 @@
+import VError from "verror";
+
 /**
  * The universal interface for logger
  */
@@ -176,6 +178,22 @@ export class SerializerInterface {
      * @return {Serializer}
      */
     forType(type, serializeFunction, deserializeFunction) { }
+
+    /**
+     * Do serialize item into data string
+     *
+     * @param {*} item
+     * @return {string}
+     */
+    serialize(item) { }
+
+    /**
+     * Deserialize a data string into its object form
+     *
+     * @param {string} serializedData
+     * @return {*}
+     */
+    deserialize(serializedData) { }
 }
 
 export class DatabaseConnectionInterface {

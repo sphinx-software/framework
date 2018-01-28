@@ -1,4 +1,3 @@
-import FactoryManager from '../FactoryManager';
 import { provider }   from '../Fusion/Fusion';
 import {CacheInterface, Config} from "../Fusion/ServiceContracts";
 
