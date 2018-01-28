@@ -1,12 +1,27 @@
 import Verbosity from "./Verbosity";
 import IO from "./IO";
 
+/**
+ * The ConsoleKernel for console application, wrapper of "tj/commander".
+ * Thanks TJ for your amazing library ;)
+ */
 export default class ConsoleKernel {
+
+    /**
+     *
+     * @param commander
+     * @param {EventEmitter} eventEmitter
+     */
     constructor(commander, eventEmitter) {
         this.commander      = commander;
         this.eventEmitter   = eventEmitter;
     }
 
+    /**
+     *
+     * @param argv
+     * @return {Promise<void | *>}
+     */
     async handle(argv) {
         this.executedCommand = false;
         this.commander.parse(argv);
@@ -22,11 +37,22 @@ export default class ConsoleKernel {
         await this.commandPromise;
     }
 
+    /**
+     *
+     * @param {Function} handler
+     * @return {ConsoleKernel}
+     */
     onError(handler) {
         this.eventEmitter.on('console-kernel.error', handler);
         return this;
     }
 
+    /**
+     *
+     * @param {Container} container
+     * @param {{action: Function}} Command
+     * @return {Promise<void>}
+     */
     async registerCommand(container, Command) {
         let commandMetadata = Reflect.getMetadata('console.command', Command);
         let commandRegistra = this.commander.command(commandMetadata.name);
