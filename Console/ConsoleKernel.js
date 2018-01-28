@@ -3,6 +3,7 @@ import IO from "./IO";
 
 /**
  * The ConsoleKernel for console application, wrapper of "tj/commander".
+ * @see https://github.com/tj/commander.js
  * Thanks TJ for your amazing library ;)
  */
 export default class ConsoleKernel {
