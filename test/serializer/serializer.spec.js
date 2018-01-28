@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const Serializer = require('./../../serializer/serializer');
+const Serializer = require('../../Serializer/Serializer');
 
 class TestStorageType {
     constructor(property) {

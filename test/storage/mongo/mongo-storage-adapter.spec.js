@@ -4,9 +4,9 @@ const path   = require('path');
 
 const MongoClient  = require('mongodb').MongoClient;
 
-const MongoStorageAdapter     = require('../../../storage/adapters/mongo/mongo-storage-adapter');
-const MongoTaggingStrategy    = require('../../../storage/adapters/mongo/mongo-tagging-strategy');
-const MongoExpirationStrategy = require('../../../storage/adapters/mongo/mongo-expiration-strategy');
+const MongoStorageAdapter     = require('../../../Storage/Adapter/mongo/mongo-storage-adapter');
+const MongoTaggingStrategy    = require('../../../Storage/Adapter/mongo/mongo-tagging-strategy');
+const MongoExpirationStrategy = require('../../../Storage/Adapter/mongo/mongo-expiration-strategy');
 
 describe('MongoStorageAdapter test suite', () => {
     let serializerStub = {};

@@ -1,0 +1,7 @@
+{
+  "presets": ["node8"],
+  "plugins": [
+    "transform-decorators-legacy",
+    "dynamic-import-node"
+  ]
+}
