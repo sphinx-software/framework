@@ -1,8 +1,9 @@
 import {ConsoleKernel as Kernel} from "../Fusion/ServiceContracts";
 import program from "commander";
-import fs from "fs";
 import {provider} from "../Fusion/Fusion";
 import ConsoleKernel from "./ConsoleKernel";
+import packageJson from "./../package";
+import chalk from "chalk";
 
 @provider()
 export default class ConsoleServiceProvider {
@@ -13,11 +14,15 @@ export default class ConsoleServiceProvider {
     }
 
     register() {
+
         this.container.singleton(Kernel, async () => {
             let eventEmitter = await this.container.make('events');
             return new ConsoleKernel(
                 program
-                    .version(fs.readFileSync(__dirname + '/header.txt', {encoding: 'utf-8'}))
+                    .version(
+                        `Fusion framework ${chalk.yellow('v' + packageJson.version)}\n` +
+                        chalk.gray(`a product of Sphinx Software™, ${new Date().getFullYear()}`)
+                    )
                     .option('-v, --verbose', 'set the output verbosity', (v, total) => total + 1, 0),
                 eventEmitter
             )
