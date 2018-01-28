@@ -8,10 +8,15 @@ export default class ConsoleKernel {
     }
 
     async handle(argv) {
+        this.executedCommand = false;
         this.commander.parse(argv);
 
         if (this.commander.args.length === 0) {
-            this.commander.help();
+            return this.commander.help();
+        }
+
+        if (!this.executedCommand) {
+            return this.commander.help();
         }
 
         await this.commandPromise;
@@ -39,6 +44,7 @@ export default class ConsoleKernel {
         let command = await container.make(Command);
 
         commandRegistra.action(() => {
+            this.executedCommand = true;
             command.context = commandRegistra;
             command.io      = new IO(new Verbosity(this.commander.verbose || 0));
             this.commandPromise = command
