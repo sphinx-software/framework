@@ -33,6 +33,7 @@
     "nunjucks": "^3.0.1",
     "reflect-metadata": "^0.1.12",
     "uuid": "^3.0.1",
+    "validator": "^9.3.0",
     "verror": "^1.9.0",
     "winston": "^2.3.1"
   },
