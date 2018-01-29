@@ -130,7 +130,7 @@ export default class Rules {
 
         lodash.forIn(this.results.fields, (fieldResult, fieldName) => {
             if (!fieldResult.validity) {
-                fields.push(fieldName)
+                fields.push(fieldName);
             }
         });
 

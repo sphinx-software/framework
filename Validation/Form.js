@@ -1,4 +1,5 @@
 import Rules from "./Rules";
+import lodash from "lodash";
 
 export default class Form {
 
@@ -79,6 +80,11 @@ export default class Form {
         // But we highly recommend to use those 2 methods only.
         // Otherwise, we'll let the user override this method.
         let data = ['get', 'head'].includes(request.method.toLowerCase()) ? request.query : request.body;
+
+        // Each missing key will be casted into an empty string.
+        lodash.keys(this.rulesDefinition).filter(key => !lodash.hasIn(data, key)).map(key => data[key] = '');
+
+        return data;
     }
 
     /**
