@@ -58,7 +58,7 @@ export default class Form {
      * @return {Promise<void>}
      */
     async invalid(context, next) {
-        context.body = this.result.reasons();
+        context.body = this.result.toJson();
     }
 
     /**
