@@ -46,12 +46,12 @@ export class MyForm extends Form {
         // Return the invalid reasons to the client by one of these methods:
 
         // Perform redirect with session.flash()
-        // Most of the time the destination is the form view itself.
+        // In the most cases the destination is the form view itself.
         // With the reasons flashed on Session, the view can re-render the form, with error reason displayed once.
         context.session.flash('myform.invalid', this.getRules().reasons());
         context.redirect('SomeController@action');
         
-        // Or response a json error (which is the default behavior of the form)
+        // Or response a json invalid reason (which is the default behavior of the form)
         // If the client want to have json response (mostly by Ajax form submit)
         context.body = this.getRules().reasons();
     }
