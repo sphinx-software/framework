@@ -91,19 +91,10 @@ export default class FormValidationResult {
     }
 
     /**
-     * Get the validation results
-     *
-     * @return {{}}
-     */
-    getResults() {
-        return this.results;
-    }
-
-    /**
      *
      * @return {{}}
      */
     toJson() {
-        return this.getResults();
+        return this.results;
     }
 }
