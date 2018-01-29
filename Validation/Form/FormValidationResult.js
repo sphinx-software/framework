@@ -1,55 +1,8 @@
-import lodash from 'lodash';
-import Promise from 'bluebird';
+import lodash from "lodash";
 
-/**
- *
- */
-export default class Rules {
-
-    results = {};
-
-    /**
-     *
-     * @param rules
-     */
-    constructor(rules) {
-        this.rules = rules;
-    }
-
-    /**
-     *
-     */
-    reset() {
-        this.results = {};
-    }
-
-    /**
-     *
-     * @param {*} data
-     * @return {Promise<void>}
-     */
-    async apply(data) {
-
-        let validatePromises = lodash.mapValues(this.rules, async (fieldRules, fieldName) => {
-            return await Promise.all(fieldRules.map(async rule => {
-                return {
-                    validatorName: rule.validatorName,
-                    validationValue: data[fieldName],
-                    validatorParameters: rule.parameters,
-                    validity: await rule.validator.validate(data, fieldName, ...rule.parameters)
-                }
-            })).then(fieldResult => {
-                return {
-                    validity: fieldResult.filter(result => !result.validity).length === 0,
-                    details: fieldResult,
-                    valids: fieldResult.filter(result => result.validity).map(result => result.validatorName),
-                    invalids: fieldResult.filter(result => !result.validity).map(result => result.validatorName)
-                }
-            });
-        });
-
-        this.results.fields   = await Promise.props(validatePromises);
-        this.results.validity = lodash.values(this.results.fields).filter(fieldResult => !fieldResult.validity).length === 0;
+export default class FormValidationResult {
+    constructor(results) {
+        this.results = results;
     }
 
     /**
@@ -154,4 +107,3 @@ export default class Rules {
         return this.getResults();
     }
 }
-

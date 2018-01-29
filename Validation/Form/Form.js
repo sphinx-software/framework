@@ -1,11 +1,12 @@
-import Rules from "./Rules";
 import lodash from "lodash";
 
 export default class Form {
 
     data            = {};
 
-    rules           = new Rules({});
+    result          = null;
+
+    rules           = null;
 
     rulesDefinition = {};
 
@@ -27,14 +28,6 @@ export default class Form {
     setRulesDefinition(rulesDefinition) {
         this.rulesDefinition = rulesDefinition;
         return this;
-    }
-
-    /**
-     *
-     * @return {Rules}
-     */
-    getRules() {
-        return this.rules;
     }
 
     /**
@@ -65,7 +58,7 @@ export default class Form {
      * @return {Promise<void>}
      */
     async invalid(context, next) {
-        context.body = this.getRules().reasons();
+        context.body = this.result.reasons();
     }
 
     /**
@@ -98,12 +91,10 @@ export default class Form {
         this.rules   = this.validatorManager.make(this.rulesDefinition);
         this.data    = this.resolveFormData(context.request);
 
-        await this.rules.apply(this.data);
+        this.result  = await this.rules.apply(this.data);
 
-        if (this.rules.valid()) {
-            await this.valid(context, next);
-        } else {
+        this.result.valid() ?
+            await this.valid(context, next) :
             await this.invalid(context, next);
-        }
     }
 }

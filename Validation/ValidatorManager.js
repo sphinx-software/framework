@@ -1,5 +1,5 @@
 import lodash from 'lodash';
-import Rules from "./Rules";
+import Rules from "./Form/Rules";
 import CallbackValidator from "./Validators/CallbackValidator";
 
 export default class ValidatorManager {

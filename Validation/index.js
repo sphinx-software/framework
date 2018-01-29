@@ -1,4 +1,4 @@
-export Form from "./Form";
+export Form from "./Form/Form";
 export RequiredValidator from "./Validators/RequiredValidator";
 export * from "./Validators/LengthValidator";
 export * from "./decorators";
