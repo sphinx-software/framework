@@ -1,5 +1,7 @@
 import ValidatorManager from "./ValidatorManager";
 import {provider} from "../Fusion/Fusion";
+import {SerializerInterface} from "../Fusion/ServiceContracts";
+import FormValidationResult from "./Form/FormValidationResult";
 
 @provider()
 export default class ValidatorServiceProvider {
@@ -34,5 +36,16 @@ export default class ValidatorServiceProvider {
 
             manager.add(validatorName, validator);
         }
+
+
+        let serializer = await this.container.make(SerializerInterface);
+        //
+        // Register the validation result to the serializer
+        // So the session can know how to flash the result
+        serializer.forType(
+            FormValidationResult,
+            validationResult => validationResult.toJson(),
+            rawResult => new FormValidationResult(rawResult)
+        )
     }
 }
