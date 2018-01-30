@@ -6,6 +6,23 @@ export default class FormValidationResult {
     }
 
     /**
+     * Get back the form value
+     *
+     * @param fieldName
+     * @return {Object|*}
+     */
+    value(fieldName = null) {
+        if (!fieldName) {
+            return lodash.mapValues(this.results.fields, fieldResult => fieldResult.value);
+        }
+        if (!this.results.fields[fieldName]) {
+            throw new Error(`E_RULES: Validation rules for field [${fieldName}] is not specified`);
+        }
+
+        return this.results.fields[fieldName].value;
+    }
+
+    /**
      * Check if the data (or the data's field) is valid
      *
      * @param fieldName

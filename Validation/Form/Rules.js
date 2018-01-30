@@ -28,12 +28,13 @@ export default class Rules {
             return await Promise.all(fieldRules.map(async rule => {
                 return {
                     validatorName: rule.validatorName,
-                    validationValue: data[fieldName],
+                    value: data[fieldName],
                     validatorParameters: rule.parameters,
                     validity: await rule.validator.validate(data, fieldName, ...rule.parameters)
                 }
             })).then(fieldResult => {
                 return {
+                    value: data[fieldName],
                     validity: fieldResult.filter(result => !result.validity).length === 0,
                     details: fieldResult,
                     valids: fieldResult.filter(result => result.validity).map(result => result.validatorName),
