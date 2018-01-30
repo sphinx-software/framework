@@ -74,6 +74,31 @@ export default class FormValidationResult {
     }
 
     /**
+     * Get the detail validation result of a given field
+     *
+     * @param fieldName
+     * @param rule
+     * @return {FormValidationResult.details|any}
+     */
+    details(fieldName, rule = null) {
+        if (!this.results.fields[fieldName]) {
+            throw new Error(`E_RULES: Validation rules for field [${fieldName}] is not specified`);
+        }
+
+        if (!rule) {
+            return this.results.fields[fieldName].details;
+        }
+
+        let detail = this.results.fields[fieldName].details.find(detail => detail.validatorName === rule);
+
+        if (!detail) {
+            throw new Error(`E_RULES: Validation rule [${rule}] is not applied for field [${fieldName}]`);
+        }
+
+        return detail;
+    }
+
+    /**
      * Get all of the valid fields
      *
      * @return {Array}
