@@ -239,17 +239,60 @@ export class SerializerInterface {
     deserialize(serializedData) { }
 }
 
+/**
+ *
+ */
 export class ValidatorInterface {
     async validate(data, field, ...parameters) { }
 }
 
-
+/**
+ *
+ */
 export class DatabaseConnectionInterface {
-    // todo
+
+    /**
+     * Create a new SQL query
+     *
+     * @param {string} table
+     */
+    query(table) { }
+
+    /**
+     * Run an SQL query
+     *
+     * @param query
+     * @return {Promise<void>}
+     */
+    async execute(query) { }
+
+    /**
+     * Run a database transaction
+     *
+     * @param procedure
+     * @return {Promise<void>}
+     */
+    async transaction(procedure) { }
+
+    /**
+     * Get the schema builder
+     */
+    schema() { }
 }
 
-export class DatabaseInterface {
-    // todo
+/**
+ *
+ */
+export class DatabaseManagerInterface {
+    /**
+     * Gets a database connection by its name
+     *
+     * @param {string|null} name The connection name
+     * @return {DatabaseConnectionInterface}
+     */
+    connection(name = null) {
+
+    }
 }
 
 export const Config = 'config';
