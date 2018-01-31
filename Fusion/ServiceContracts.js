@@ -254,9 +254,8 @@ export class DatabaseConnectionInterface {
     /**
      * Create a new SQL query
      *
-     * @param {string} table
      */
-    query(table) { }
+    query() { }
 
     /**
      * Run an SQL query
