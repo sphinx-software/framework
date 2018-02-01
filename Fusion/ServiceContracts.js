@@ -243,13 +243,62 @@ export class ValidatorInterface {
     async validate(data, field, ...parameters) { }
 }
 
-
+/**
+ *
+ */
 export class DatabaseConnectionInterface {
-    // todo
+
+    /**
+     * Create a new SQL query
+     *
+     */
+    query() { }
+
+    /**
+     * Run an SQL query
+     *
+     * @param query
+     * @return {Promise<void>}
+     */
+    async execute(query) { }
+
+    /**
+     * Run a database transaction
+     *
+     * @param procedure
+     * @return {Promise<void>}
+     */
+    async transaction(procedure) { }
+
+    /**
+     * Get the schema builder
+     */
+    schema() { }
 }
 
-export class DatabaseInterface {
-    // todo
+/**
+ *
+ */
+export class DatabaseManagerInterface {
+    /**
+     * Gets a database connection by its name
+     *
+     * @param {string|null} name The connection name
+     * @return {DatabaseConnectionInterface}
+     */
+    connection(name = null) {
+
+    }
+
+    /**
+     * Creates a query against a table
+     *
+     * @param {string} table
+     * @param {string|null} connection
+     */
+    from(table, connection = null) {
+
+    }
 }
 
 export const Config = 'config';
