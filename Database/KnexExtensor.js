@@ -1,4 +1,3 @@
-import knex from 'knex';
 import lodash from 'lodash';
 
 export default class KnexExtensor {
@@ -7,11 +6,27 @@ export default class KnexExtensor {
 
     morphers    = {};
 
+    defaultMorphers = [];
+
+    defaultScopers  = [];
+
     upgrade(knexConnection) {
+        let defaultScopers = this.defaultScopers;
+        let scopers        = this.scopers;
+
         return new Proxy(knexConnection, {
             get: (target, property) => {
                 if ('query' === property) {
-                    return (...args) => this.upgradeBuilder(target.queryBuilder(...args));
+
+
+                    return (...args) => {
+
+                        let query = target.queryBuilder(...args);
+
+                        defaultScopers.reduce( (query, scoperName) => query.modify(scopers[scoperName]), query);
+
+                        return this.upgradeBuilder(query);
+                    }
                 }
 
                 return target[property];
@@ -46,7 +61,7 @@ export default class KnexExtensor {
 
     handlePostProcess(result) {
 
-        if (lodash.isArray(result) && result.length) {
+        if (lodash.isArray(result) && result.length && result[0]['$$$__fusion_morph__']) {
             let morphers = result[0]['$$$__fusion_morph__'].split('|');
 
             return morphers.reduce((result, currentMorpherName) => this.morphers[currentMorpherName](result), result);
@@ -61,13 +76,19 @@ export default class KnexExtensor {
         return result;
     }
 
-    registerMorpher(name, morpher) {
+    registerMorpher(name, morpher, isDefault = false) {
         this.morphers[name] = morpher;
+        if (isDefault) {
+            this.defaultMorphers.push(name);
+        }
         return this;
     }
 
-    registerScoper(name, scoper) {
+    registerScoper(name, scoper, isDefault = false) {
         this.scopers[name] = scoper;
+        if (isDefault) {
+            this.defaultScopers.push(name);
+        }
         return this;
     }
 }

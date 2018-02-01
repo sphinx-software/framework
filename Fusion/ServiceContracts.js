@@ -292,6 +292,16 @@ export class DatabaseManagerInterface {
     connection(name = null) {
 
     }
+
+    /**
+     * Creates a query against a table
+     *
+     * @param {string} table
+     * @param {string|null} connection
+     */
+    from(table, connection = null) {
+
+    }
 }
 
 export const Config = 'config';
