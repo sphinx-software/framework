@@ -244,6 +244,27 @@ export class ValidatorInterface {
 }
 
 
+/**
+ * The universal interface for translate service
+ */
+export class TranslatorInterface {
+
+    /**
+     *
+     * @param {string} locale
+     * @return {Promise.<void>}
+     */
+    locale(locale) {}
+
+    /**
+     *
+     * @param {string} key
+     * @return {Promise.<void>}
+     */
+    translate(key) {}
+
+}
+
 export class DatabaseConnectionInterface {
     // todo
 }
