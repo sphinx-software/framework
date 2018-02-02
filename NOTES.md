@@ -139,3 +139,11 @@ And **required** validator as well.
     This is what we are trying to make a good way to implement **DDD**. 
     If we have a valid data (which have passed through the form) then, we can build it as a **Domain Model**. 
     And vice-versa, a **Domain Model** should always has valid state.
+    
+    
+    
+## Database
+
+- DatabaseManger can handle multiple database connections
+- QueryScoper -> knex.modify
+- Result Morpher -> knex.postProcess

@@ -239,6 +239,9 @@ export class SerializerInterface {
     deserialize(serializedData) { }
 }
 
+/**
+ *
+ */
 export class ValidatorInterface {
     async validate(data, field, ...parameters) { }
 }

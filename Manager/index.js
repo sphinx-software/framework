@@ -67,10 +67,14 @@ export default class Manager {
      * Get an adapter by its name. If adapterName is not specified
      * We'll return the default one.
      *
-     * @param {string} adapterName
+     * @param {string|null} adapterName
      * @return {*}
      */
-    adapter(adapterName = this.defaultAdapter) {
+    adapter(adapterName = null) {
+
+        if (!adapterName) {
+            adapterName = this.defaultAdapter;
+        }
 
         // If adapterName still a falsy value, consider as an error
         if (!adapterName) {
