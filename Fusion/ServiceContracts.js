@@ -1,5 +1,7 @@
 /**
  * The universal interface for logger
+ *
+ * @interface
  */
 export class LoggerInterface {
 
@@ -56,6 +58,8 @@ export class LoggerInterface {
 
 /**
  * The universal interface for storage adapter
+ *
+ * @interface
  */
 export class StorageAdapterInterface {
     /**
@@ -87,6 +91,8 @@ export class StorageAdapterInterface {
 
 /**
  * The universal interface for storage adapter factory
+ *
+ * @interface
  */
 export class StorageAdapterFactoryInterface {
 
@@ -101,6 +107,8 @@ export class StorageAdapterFactoryInterface {
 
 /**
  * The universal interface for cache service
+ *
+ * @interface
  */
 export class CacheInterface extends StorageAdapterFactoryInterface {
 
@@ -131,6 +139,8 @@ export class CacheInterface extends StorageAdapterFactoryInterface {
 
 /**
  * The universal interface for session storage
+ *
+ * @interface
  */
 export class SessionStorageInterface extends StorageAdapterInterface {
 
@@ -161,6 +171,8 @@ export class SessionStorageInterface extends StorageAdapterInterface {
 
 /**
  * The universal interface for hash service
+ *
+ * @interface
  */
 export class HasherInterface {
 
@@ -182,6 +194,8 @@ export class HasherInterface {
 
 /**
  * The universal interface for mail service
+ *
+ * @interface
  */
 export class MailerInterface {
     /**
@@ -196,6 +210,8 @@ export class MailerInterface {
 
 /**
  * The universal interface for view service
+ *
+ * @interface
  */
 export class ViewFactoryInterface {
     /**
@@ -210,6 +226,8 @@ export class ViewFactoryInterface {
 
 /**
  * The universal interface for serializer service
+ *
+ * @interface
  */
 export class SerializerInterface {
 
@@ -240,14 +258,14 @@ export class SerializerInterface {
 }
 
 /**
- *
+ * @interface
  */
 export class ValidatorInterface {
     async validate(data, field, ...parameters) { }
 }
 
 /**
- *
+ * @interface DatabaseConnectionInterface
  */
 export class DatabaseConnectionInterface {
 
@@ -280,7 +298,7 @@ export class DatabaseConnectionInterface {
 }
 
 /**
- *
+ * @interface
  */
 export class DatabaseManagerInterface {
     /**
