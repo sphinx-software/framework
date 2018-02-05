@@ -42,8 +42,7 @@
     "winston": "^2.3.1"
   },
   "directories": {
-    "test": "test",
-    "lib": "./build"
+    "test": "test"
   },
   "repository": {
     "type": "git",

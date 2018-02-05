@@ -2,7 +2,6 @@ import {ConsoleKernel as Kernel} from "../Fusion/ServiceContracts";
 import program from "commander";
 import {provider} from "../Fusion/Fusion";
 import ConsoleKernel from "./ConsoleKernel";
-import packageJson from "../../package";
 import chalk from "chalk";
 
 @provider()
@@ -26,7 +25,7 @@ export default class ConsoleServiceProvider {
         this.container.value(Kernel, new ConsoleKernel(
             program
                 .version(
-                    `Fusion framework ${chalk.yellow('v' + packageJson.version)}\n` +
+                    `Fusion framework ${chalk.yellow('v1.2')}\n` +
                     chalk.gray(`a product of Sphinx Software™, ${new Date().getFullYear()}`))
                 .option('-v, --verbose', 'set the output verbosity', (v, total) => total + 1, 0)
         ));
