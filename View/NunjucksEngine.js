@@ -1,5 +1,6 @@
 import nunjucks from 'nunjucks';
 import {provider} from "../Fusion/Fusion";
+import {ViewEngineInterface} from "../Fusion/ServiceContracts";
 
 class SphinxLoader {
     constructor(nunjuckFileSystemLoader) {
@@ -74,14 +75,14 @@ export class ViewEngineNunjucksServiceProvider {
             );
         });
 
-        this.container.singleton('view.engine', async () => {
+        this.container.singleton(ViewEngineInterface, async () => {
             let env    = await this.container.make('view.environment');
             return new NunjucksEngine(env);
         });
     }
 
     async boot() {
-        let engine  = await this.container.make('view.engine');
+        let engine  = await this.container.make(ViewEngineInterface);
         let filters = this.fusion.getByManifest('view.nunjucks.filter');
 
         await Promise.all(filters.map(async (FilterClass) => {
