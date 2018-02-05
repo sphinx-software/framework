@@ -2,7 +2,7 @@ import {ConsoleKernel as Kernel} from "../Fusion/ServiceContracts";
 import program from "commander";
 import {provider} from "../Fusion/Fusion";
 import ConsoleKernel from "./ConsoleKernel";
-import packageJson from "./../package";
+import packageJson from "../../package";
 import chalk from "chalk";
 
 @provider()

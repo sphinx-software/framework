@@ -1,6 +1,6 @@
 import Session from './Session';
 import uuid from 'uuid/v4';
-import {singleton} from "./../MetaInjector";
+import {singleton} from "../MetaInjector";
 import {Config, SerializerInterface, SessionStorageInterface} from "../Fusion/ServiceContracts";
 
 @singleton(Config, SessionStorageInterface)

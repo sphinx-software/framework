@@ -4,12 +4,14 @@
   "description": "Sphinx Standard Library",
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/.bin/mocha test/ --recursive"
+    "test": "node node_modules/.bin/mocha test/ --recursive",
+    "build": "node node_modules/.bin/babel src -d build"
   },
   "author": "rikky <rikky@sphinx-software.com>",
   "license": "MIT",
   "devDependencies": {
     "app-module-path": "^2.2.0",
+    "babel-cli": "^6.26.0",
     "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-node8": "^1.2.0",
@@ -40,7 +42,8 @@
     "winston": "^2.3.1"
   },
   "directories": {
-    "test": "test"
+    "test": "test",
+    "lib": "./build"
   },
   "repository": {
     "type": "git",

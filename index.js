@@ -1,1 +1,1 @@
-export * from './Fusion/ServiceContracts';
+export * from './src/Fusion/ServiceContracts';
