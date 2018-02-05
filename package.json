@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node node_modules/.bin/mocha test/ --recursive",
-    "build": "node node_modules/.bin/babel src -d build"
+    "build": "node node_modules/.bin/babel src -d build",
+    "prepublish": "npm run build"
   },
   "author": "rikky <rikky@sphinx-software.com>",
   "license": "MIT",
