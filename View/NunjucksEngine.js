@@ -21,7 +21,10 @@ class SphinxLoader {
     }
 }
 
-class NunjucksEngine {
+/**
+ * @implements ViewEngineInterface
+ */
+export class NunjucksEngine {
 
     constructor(nunjucksEnvironment) {
         this.nunjuckEnvironment = nunjucksEnvironment;
@@ -47,9 +50,9 @@ class NunjucksEngine {
     }
 
 
-    addFilter(filterName, filter, async = false) {
+    addFilter(filterName, filter) {
         this.nunjuckEnvironment
-            .addFilter(filterName, (...parameters) => filter.run(...parameters), async)
+            .addFilter(filterName, (...parameters) => filter.run(...parameters))
         ;
         return this;
     }
@@ -79,13 +82,13 @@ export class ViewEngineNunjucksServiceProvider {
 
     async boot() {
         let engine  = await this.container.make('view.engine');
-        let filters = this.fusion.getByManifest('fusion.view.filter');
+        let filters = this.fusion.getByManifest('view.nunjucks.filter');
 
         await Promise.all(filters.map(async (FilterClass) => {
-            let filterName = Reflect.getMetadata('fusion.view.filter', FilterClass);
+            let filterName = Reflect.getMetadata('view.nunjucks.filter', FilterClass);
             let filter     = this.container.make(FilterClass);
 
-            engine.addFilter(filterName, filter, filter.async);
+            engine.addFilter(filterName, filter);
         }));
     }
 }
