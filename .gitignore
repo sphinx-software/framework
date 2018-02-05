@@ -1,3 +1,4 @@
 node_modules
 .idea
 .mongodb
+build
