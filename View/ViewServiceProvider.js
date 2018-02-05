@@ -45,3 +45,7 @@ export function viewRendering(templateName) {
 export function viewMaking(templateName) {
     return Reflect.metadata('view.decorator.making', templateName);
 }
+
+export function viewFilter() {
+    return Reflect.metadata('view.decorator.filter');
+}

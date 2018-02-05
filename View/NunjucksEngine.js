@@ -45,22 +45,47 @@ class NunjucksEngine {
             });
         });
     }
+
+
+    addFilter(filterName, filter, async = false) {
+        this.nunjuckEnvironment
+            .addFilter(filterName, (...parameters) => filter.run(...parameters), async)
+        ;
+        return this;
+    }
 }
 
 @provider()
 export class ViewEngineNunjucksServiceProvider {
-    constructor(container) {
+    constructor(container, fusion) {
         this.container = container;
+        this.fusion    = fusion;
     }
 
     register() {
-        this.container.singleton('view.engine', async () => {
+
+        this.container.singleton('view.environment', async () => {
             let config = await this.container.make('config');
-            return new NunjucksEngine(
-                new nunjucks.Environment(
-                    new SphinxLoader(new nunjucks.FileSystemLoader(config.view.directory, config.view.options))
-                )
-            )
-        })
+            return new nunjucks.Environment(
+                new SphinxLoader(new nunjucks.FileSystemLoader(config.view.directory, config.view.options))
+            );
+        });
+
+        this.container.singleton('view.engine', async () => {
+            let env    = await this.container.make('view.environment');
+            return new NunjucksEngine(env);
+        });
+    }
+
+    async boot() {
+        let engine  = await this.container.make('view.engine');
+        let filters = this.fusion.getByManifest('fusion.view.filter');
+
+        await Promise.all(filters.map(async (FilterClass) => {
+            let filterName = Reflect.getMetadata('fusion.view.filter', FilterClass);
+            let filter     = this.container.make(FilterClass);
+
+            engine.addFilter(filterName, filter, filter.async);
+        }));
     }
 }
