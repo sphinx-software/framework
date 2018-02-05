@@ -3,17 +3,8 @@ import {Config, TranslatorInterface, ViewEngineInterface} from "../Fusion/Servic
 import Translator from "./Translator";
 import i18next from 'i18next';
 import {NunjucksEngine} from "../View/NunjucksEngine";
+import {TranslateViewFilter} from "./TranslateViewFilter";
 
-class TranslateViewFilter {
-
-    constructor(translator) {
-        this.translator = translator;
-    }
-
-    run(key) {
-        return this.translator.translate(key);
-    }
-}
 
 @provider()
 export default class I18nProvider {
