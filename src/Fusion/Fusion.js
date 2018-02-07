@@ -48,7 +48,7 @@ export class Fusion {
      * @param {function} bootPhaseHandler
      * @return {Promise<*>}
      */
-    async activate(config, container, registerPhaseHandler, bootPhaseHandler) {
+    async activate(config, container, registerPhaseHandler = async () => {}, bootPhaseHandler = async () => {}) {
 
         // Pre inject the configuration & fusion itself
         container.value(Config, config);
