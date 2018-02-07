@@ -44,9 +44,11 @@ export class Fusion {
      *
      * @param config
      * @param container
+     * @param {function} registerPhaseHandler
+     * @param {function} bootPhaseHandler
      * @return {Promise<*>}
      */
-    async activate(config, container) {
+    async activate(config, container, registerPhaseHandler, bootPhaseHandler) {
 
         // Pre inject the configuration & fusion itself
         container.value(Config, config);
@@ -57,11 +59,15 @@ export class Fusion {
 
         providers.forEach(provider => provider.register());
 
+        await registerPhaseHandler();
+
         let earlyBootProviders = providers.filter(provider => lodash.isFunction(provider['boot']));
 
         for(let index = 0; index < earlyBootProviders.length; index++) {
             await earlyBootProviders[index]['boot']();
         }
+
+        await bootPhaseHandler();
 
         return container;
     }
