@@ -9,6 +9,9 @@
     "prepublish": "npm run build"
   },
   "author": "rikky <rikky@sphinx-software.com>",
+  "contributors": [
+    "Hai Ngo <haingo6394@gmail.com>"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@sphinx-software/wave-function": "0.0.4",
