@@ -1,6 +1,6 @@
 import nunjucks from 'nunjucks';
-import {provider} from "../Fusion/Fusion";
-import {ViewEngineInterface} from "../Fusion/ServiceContracts";
+import {provider} from "../Fusion";
+import {ViewEngineInterface} from "../ServiceContracts";
 
 class SphinxLoader {
     constructor(nunjuckFileSystemLoader) {

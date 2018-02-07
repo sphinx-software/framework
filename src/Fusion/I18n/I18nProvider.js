@@ -1,5 +1,5 @@
-import {provider} from "../Fusion/Fusion";
-import {Config, TranslatorInterface, ViewEngineInterface} from "../Fusion/ServiceContracts";
+import {provider} from "../Fusion";
+import {Config, TranslatorInterface, ViewEngineInterface} from "../ServiceContracts";
 import Translator from "./Translator";
 import i18next from 'i18next';
 import {NunjucksEngine} from "../View/NunjucksEngine";

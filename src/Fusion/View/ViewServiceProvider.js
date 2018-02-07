@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import ViewFactory from './ViewFactory';
-import {provider} from "../Fusion/Fusion";
-import {ViewEngineInterface, ViewFactoryInterface} from "../Fusion/ServiceContracts";
+import {provider} from "../Fusion";
+import {ViewEngineInterface, ViewFactoryInterface} from "../ServiceContracts";
 
 @provider()
 export default class ViewServiceProvider {

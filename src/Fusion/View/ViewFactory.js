@@ -5,7 +5,7 @@ export default class ViewFactory {
     /**
      *
      * @param {EventEmitter} eventEmitter
-     * @param {ViewEngine} viewEngine
+     * @param {ViewEngineInterface} viewEngine
      */
     constructor(eventEmitter, viewEngine) {
         this.eventEmitter  = eventEmitter;
