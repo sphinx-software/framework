@@ -1,4 +1,4 @@
-import TestSuite from "WaveFunction";
+import TestSuite from "WaveFunction/TestSuite";
 import fusion from "Fusion/Fusion";
 import Container from "@sphinx-software/container";
 import {EventEmitter} from "events";
