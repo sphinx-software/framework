@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import ViewFactory from './ViewFactory';
-import {provider} from "../Fusion";
-import {ViewFactoryInterface} from "../ServiceContracts";
+import {provider} from "../Fusion/Fusion";
+import {ViewEngineInterface, ViewFactoryInterface} from "../Fusion/ServiceContracts";
 
 @provider()
 export default class ViewServiceProvider {
@@ -12,7 +12,7 @@ export default class ViewServiceProvider {
 
     register() {
         this.container.singleton(ViewFactoryInterface, async () => {
-            let engine = await this.container.make('view.engine');
+            let engine = await this.container.make(ViewEngineInterface);
             return new ViewFactory(new EventEmitter(), engine);
         });
     }
@@ -44,4 +44,8 @@ export function viewRendering(templateName) {
 
 export function viewMaking(templateName) {
     return Reflect.metadata('view.decorator.making', templateName);
+}
+
+export function filter(filterName) {
+    return Reflect.metadata('view.nunjucks.filter', filterName);
 }

@@ -1,5 +1,6 @@
 import nunjucks from 'nunjucks';
-import {provider} from "../Fusion";
+import {provider} from "../Fusion/Fusion";
+import {ViewEngineInterface} from "../Fusion/ServiceContracts";
 
 class SphinxLoader {
     constructor(nunjuckFileSystemLoader) {
@@ -21,7 +22,10 @@ class SphinxLoader {
     }
 }
 
-class NunjucksEngine {
+/**
+ * @implements ViewEngineInterface
+ */
+export class NunjucksEngine {
 
     constructor(nunjucksEnvironment) {
         this.nunjuckEnvironment = nunjucksEnvironment;
@@ -45,22 +49,47 @@ class NunjucksEngine {
             });
         });
     }
+
+
+    addFilter(filterName, filter) {
+        this.nunjuckEnvironment
+            .addFilter(filterName, (...parameters) => filter.run(...parameters))
+        ;
+        return this;
+    }
 }
 
 @provider()
 export class ViewEngineNunjucksServiceProvider {
-    constructor(container) {
+    constructor(container, fusion) {
         this.container = container;
+        this.fusion    = fusion;
     }
 
     register() {
-        this.container.singleton('view.engine', async () => {
+
+        this.container.singleton('view.environment', async () => {
             let config = await this.container.make('config');
-            return new NunjucksEngine(
-                new nunjucks.Environment(
-                    new SphinxLoader(new nunjucks.FileSystemLoader(config.view.directory, config.view.options))
-                )
-            )
-        })
+            return new nunjucks.Environment(
+                new SphinxLoader(new nunjucks.FileSystemLoader(config.view.directory, config.view.options))
+            );
+        });
+
+        this.container.singleton(ViewEngineInterface, async () => {
+            let env    = await this.container.make('view.environment');
+            return new NunjucksEngine(env);
+        });
+    }
+
+    async boot() {
+        let engine  = await this.container.make(ViewEngineInterface);
+        let filters = this.fusion.getByManifest('view.nunjucks.filter');
+
+        await Promise.all(filters.map(async (FilterClass) => {
+            let filterName = Reflect.getMetadata('view.nunjucks.filter', FilterClass);
+            let filter     = this.container.make(FilterClass);
+
+            engine.addFilter(filterName, filter);
+        }));
     }
 }

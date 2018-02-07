@@ -265,6 +265,55 @@ export class ValidatorInterface {
 }
 
 /**
+ * The universal interface for translate service
+ */
+export class TranslatorInterface {
+
+    /**
+     *
+     * @param {string} locale
+     * @return {Promise.<void>}
+     */
+    locale(locale) {}
+
+    /**
+     *
+     * @param {string} key
+     * @return {Promise.<void>}
+     */
+    translate(key) {}
+
+}
+
+/**
+ * @interface
+ */
+export class NunjucksViewFilterInterface {
+
+    /**
+     * Filter a value and returns it's presentation
+     *
+     * @param {any} value
+     * @param parameters
+     * @return string
+     */
+    run(value, ...parameters) { }
+}
+
+/**
+ * @interface
+ */
+export class ViewEngineInterface {
+
+    /**
+     *
+     * @param {View} view
+     * @return {Promise<string>}
+     */
+    async render(view) { }
+}
+
+/**
  * @interface DatabaseConnectionInterface
  */
 export class DatabaseConnectionInterface {
