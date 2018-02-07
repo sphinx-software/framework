@@ -2,6 +2,13 @@
   "presets": ["node8"],
   "plugins": [
     "transform-decorators-legacy",
-    "dynamic-import-node"
+    ["module-resolver", {
+      "alias": {
+        "^WaveFunction/(.+)": "@sphinx-software/wave-function/build/WaveFunction/\\1",
+        "Fusion": "./src/Fusion",
+        "^Fusion/(.+)": "./src/Fusion\\1",
+        "^Test": "./test/Test"
+      }
+    }]
   ]
 }
