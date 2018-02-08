@@ -61,11 +61,20 @@ export class Fusion {
 
         await registerPhaseHandler();
 
-        let earlyBootProviders = providers.filter(provider => lodash.isFunction(provider['boot']));
+        let bootingPromises = Promise.all(providers.map(async (provider) => {
+            if (Reflect.getMetadata('fusion.provider', provider.constructor).length) {
+                let providedDependencies = Reflect.getMetadata('fusion.provider', provider.constructor).length;
 
-        for(let index = 0; index < earlyBootProviders.length; index++) {
-            await earlyBootProviders[index]['boot']();
-        }
+                providedDependencies.forEach(dependency => {
+                    container.made(dependency, () => provider.boot());
+                });
+            } else {
+                // early booted
+                await provider.boot();
+            }
+        }));
+
+        await bootingPromises;
 
         await bootPhaseHandler();
 
