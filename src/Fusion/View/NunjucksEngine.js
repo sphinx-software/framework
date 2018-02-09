@@ -78,18 +78,15 @@ export class ViewEngineNunjucksServiceProvider {
         this.container.singleton(ViewEngineInterface, async () => {
             let env    = await this.container.make('view.environment');
             return new NunjucksEngine(env);
+        }).made(ViewEngineInterface, async engine => {
+            let filters = this.fusion.getByManifest('view.nunjucks.filter');
+
+            await Promise.all(filters.map(async (FilterClass) => {
+                let filterName = Reflect.getMetadata('view.nunjucks.filter', FilterClass);
+                let filter     = this.container.make(FilterClass);
+
+                engine.addFilter(filterName, filter);
+            }));
         });
-    }
-
-    async boot() {
-        let engine  = await this.container.make(ViewEngineInterface);
-        let filters = this.fusion.getByManifest('view.nunjucks.filter');
-
-        await Promise.all(filters.map(async (FilterClass) => {
-            let filterName = Reflect.getMetadata('view.nunjucks.filter', FilterClass);
-            let filter     = this.container.make(FilterClass);
-
-            engine.addFilter(filterName, filter);
-        }));
     }
 }

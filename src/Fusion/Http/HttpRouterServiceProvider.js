@@ -23,18 +23,13 @@ export default class HttpRouterServiceProvider {
             let config = await this.container.make(Config);
 
             return new Router(config.http.router);
+        }).made(HttpRouter, async (router) => {
+            let controllers = this.fusion.getByManifest('http.controller');
+
+            await Promise.all(controllers.map(Controller => this.bindController(router, Controller)));
+
+            return router;
         });
-    }
-
-    /**
-     *
-     * @return {Promise<void>}
-     */
-    async boot() {
-        let controllers = this.fusion.getByManifest('http.controller');
-        let router      = await this.container.make(HttpRouter);
-
-        await controllers.map(Controller => this.bindController(router, Controller));
     }
 
     /**
