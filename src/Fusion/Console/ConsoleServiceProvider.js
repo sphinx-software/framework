@@ -22,7 +22,7 @@ export default class ConsoleServiceProvider {
      */
     register() {
 
-        this.container.singleton(Kernel, new ConsoleKernel(
+        this.container.singleton(Kernel, async () => new ConsoleKernel(
             program
                 .version(
                     `Fusion framework ${chalk.yellow('v1.2')}\n` +
