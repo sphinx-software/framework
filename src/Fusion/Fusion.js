@@ -58,7 +58,10 @@ export class Fusion {
         // Load all of service providers & bootstrap them
         let providers = this.getByManifest('fusion.provider').map(Provider => new Provider(container, fusion));
 
-        providers.forEach(provider => provider.register());
+        providers.forEach(provider => {
+            console.info(`registering ${chalk.cyan(provider.constructor.name)}`);
+            provider.register();
+        });
 
         await registerPhaseHandler();
 
@@ -66,22 +69,9 @@ export class Fusion {
 
         for(let index = 0; index < havingBootProviders.length; index ++) {
             let provider = havingBootProviders[index];
-
-            if (Reflect.getMetadata('fusion.provider', provider.constructor).length) {
-                let providedDependencies = Reflect.getMetadata('fusion.provider', provider.constructor).length;
-
-                providedDependencies.forEach(dependency => {
-                    container.made(dependency, async (dependency) => {
-                        await provider.boot();
-                        return dependency;
-                    });
-                });
-            } else {
-                // early booted
-                console.info(`booting ${chalk.cyan(provider.constructor.name)}`);
-                await provider.boot();
-            }
-
+            // early booted
+            console.info(`booting ${chalk.cyan(provider.constructor.name)}`);
+            await provider.boot();
         }
 
         await bootPhaseHandler();

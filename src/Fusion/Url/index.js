@@ -112,11 +112,8 @@ export class UrlServiceProvider {
             let config = await this.container.make(Config);
 
             return new Url(router).setHost(config.http.host).setAssetsPath(config.http.asset).secure(config.http.secure);
+        }).made(ViewFactoryInterface, async view => {
+            view.global('url', await this.container.make(Url));
         });
-    }
-
-    async boot() {
-        let view = await this.container.make(ViewFactoryInterface);
-        view.global('url', await this.container.make(Url));
     }
 }

@@ -31,21 +31,19 @@ export default class SessionProvider {
 
             return pickedAdapter.make(adapterConfig);
         });
-    }
 
-    async boot() {
-        let serializer = await this.container.make(SerializerInterface);
+        this.container.made(SerializerInterface, serializer => {
+            // Let serializer know how to serialize / deserialize Session data
+            serializer.forType(
+                Session,
 
-        // Let serializer know how to serialize / deserialize Session data
-        serializer.forType(
-            Session,
+                // Extract the session's data
+                (session) => session.toJson(),
 
-            // Extract the session's data
-            (session) => session.toJson(),
+                // Rebuild the session from it's session data
+                (sessionData) => new Session(serializer).init(sessionData)
+            );
 
-            // Rebuild the session from it's session data
-            (sessionData) => new Session(serializer).init(sessionData)
-        );
-
+        })
     }
 }
