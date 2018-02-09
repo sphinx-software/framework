@@ -14,7 +14,7 @@ export default class ViewServiceProvider {
         this.container.singleton(ViewFactoryInterface, async () => {
             let engine = await this.container.make(ViewEngineInterface);
             return new ViewFactory(new EventEmitter(), engine);
-        }).made(async viewFactory => {
+        }).made(ViewFactoryInterface, async viewFactory => {
 
             let viewRenderingMacros = this.fusion.getByManifest('view.decorator.rendering');
 
