@@ -1,6 +1,6 @@
 {
   "name": "@sphinx-software/fusion",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Sphinx Standard Library",
   "main": "index.js",
   "scripts": {
