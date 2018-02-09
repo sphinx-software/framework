@@ -14,18 +14,17 @@ export default class DatabaseServiceProvider {
     }
 
     register() {
-        this.container.value(DatabaseManagerInterface, new DatabaseManager());
+        this.container.singleton(DatabaseManagerInterface, async () => new DatabaseManager())
+            .made(DatabaseManagerInterface, async manager => {
+                let config   = await this.container.make(Config);
+
+                lodash.forIn(config.database.connections, (connectionConfig, name) => {
+                    manager.extend(name, () => new KnexConnectionWrapper(knex(connectionConfig)));
+                });
+
+                manager.setDefaultAdapter(config.database.default);
+            })
+        ;
     }
 
-    async boot() {
-
-        let manager  = await this.container.make(DatabaseManagerInterface);
-        let config   = await this.container.make(Config);
-
-        lodash.forIn(config.database.connections, (connectionConfig, name) => {
-            manager.extend(name, () => new KnexConnectionWrapper(knex(connectionConfig)));
-        });
-
-        manager.setDefaultAdapter(config.database.default);
-    }
 }

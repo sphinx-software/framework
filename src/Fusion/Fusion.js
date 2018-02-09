@@ -1,5 +1,6 @@
 import lodash from 'lodash';
 import {Config} from "./ServiceContracts";
+import chalk from 'chalk';
 
 /**
  * The Fusion core.
@@ -57,14 +58,20 @@ export class Fusion {
         // Load all of service providers & bootstrap them
         let providers = this.getByManifest('fusion.provider').map(Provider => new Provider(container, fusion));
 
-        providers.forEach(provider => provider.register());
+        providers.forEach(provider => {
+            console.info(`registering ${chalk.cyan(provider.constructor.name)}`);
+            provider.register();
+        });
 
         await registerPhaseHandler();
 
-        let earlyBootProviders = providers.filter(provider => lodash.isFunction(provider['boot']));
+        let havingBootProviders = providers.filter(provider => lodash.isFunction(provider.boot));
 
-        for(let index = 0; index < earlyBootProviders.length; index++) {
-            await earlyBootProviders[index]['boot']();
+        for(let index = 0; index < havingBootProviders.length; index ++) {
+            let provider = havingBootProviders[index];
+            // early booted
+            console.info(`booting ${chalk.cyan(provider.constructor.name)}`);
+            await provider.boot();
         }
 
         await bootPhaseHandler();

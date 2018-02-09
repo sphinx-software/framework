@@ -66,13 +66,11 @@ export default class ChrisOHaharaValidatorServiceProvider {
         this.container = container;
     }
 
-    register() { }
-
-    async boot() {
-        let manager = await this.container.make(ValidatorManager);
-
-        lodash.forIn(this.supportedMethods, (method, name) => {
-            manager.add(name, new ChrisOHaraValidatorValidator(method))
-        });
+    register() {
+        this.container.made(ValidatorManager, async (manager) => {
+            lodash.forIn(this.supportedMethods, (method, name) => {
+                manager.add(name, new ChrisOHaraValidatorValidator(method))
+            });
+        })
     }
 }

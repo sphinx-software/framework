@@ -22,23 +22,15 @@ export default class ConsoleServiceProvider {
      */
     register() {
 
-        this.container.value(Kernel, new ConsoleKernel(
+        this.container.singleton(Kernel, async () => new ConsoleKernel(
             program
                 .version(
                     `Fusion framework ${chalk.yellow('v1.2')}\n` +
                     chalk.gray(`a product of Sphinx Software™, ${new Date().getFullYear()}`))
                 .option('-v, --verbose', 'set the output verbosity', (v, total) => total + 1, 0)
-        ));
-    }
-
-    /**
-     *
-     * @return {Promise<void>}
-     */
-    async boot() {
-        let commands = this.fusion.getByManifest('console.command');
-        let kernel   = await this.container.make(Kernel);
-
-        await Promise.all(commands.map(Command => kernel.registerCommand(this.container, Command)));
+        )).made(Kernel, async kernel => {
+            let commands = this.fusion.getByManifest('console.command');
+            await Promise.all(commands.map(Command => kernel.registerCommand(this.container, Command)));
+        });
     }
 }
