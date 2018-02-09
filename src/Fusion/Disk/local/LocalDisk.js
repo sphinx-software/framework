@@ -1,12 +1,14 @@
 import fs                from 'fs';
-import { promisify }     from 'util';
 import path              from 'path';
+import { promisify }     from 'util';
 import { DiskInterface } from '../../ServiceContracts';
 
-export default class LocalDisk extends DiskInterface {
+/**
+ * @implements DiskInterface
+ */
+export default class LocalDisk {
 
     constructor() {
-        super();
         this.fsExists = promisify(fs.exists);
         this.fsDelete = promisify(fs.unlink);
     }
@@ -80,4 +82,5 @@ export default class LocalDisk extends DiskInterface {
     delete(fileName) {
         return this.fsDelete(path.join(this.directory, fileName));
     }
+
 }
