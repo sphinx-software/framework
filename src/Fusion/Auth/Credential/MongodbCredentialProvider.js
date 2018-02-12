@@ -55,10 +55,7 @@ export default class MongodbCredentialProvider {
     async provide(username, password) {
 
         // get credential via username
-        const raw = (await this.mongodb[this.collection]
-            .find({[this.identityField]: username})
-            .limit(1))[0]
-        ;
+        const raw = await this.mongodb[this.collection].findOne({[this.identityField]: username});
 
         // if credential exists check the password is valid
         if ( ! raw || ! await this.hash.check(password, raw[this.passwordField])) {

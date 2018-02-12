@@ -54,14 +54,18 @@ export default class DatabaseCredentialProvider {
      */
     async provide(username, password) {
         // get credential via username
-        const raw = (await this.database.table(this.table)
+        const raw = (await this.database.query().table(this.table)
             .where({[this.identityField]: username})
-            .limit(1))[0]
+            .first())
         ;
 
         // if credential exists check the password is valid
-        if ( ! raw || ! await this.hash.check(password, raw[this.passwordField])) {
-            throw new VError('E_AUTH: Invalid username or password');
+        if ( ! raw ) {
+            throw new VError('E_AUTH: Invalid username');
+        }
+
+        if (! await this.hash.check(password, raw[this.passwordField])) {
+            throw new VError('E_AUTH: Invalid password');
         }
 
         return new Credential(raw);
