@@ -1,9 +1,11 @@
 import {provider} from "../Fusion";
 import SessionAuthenticator from "./SessionAuthenticator";
-import {Config, DatabaseManagerInterface, HasherInterface} from "../ServiceContracts"
+import {Config, DatabaseManagerInterface, HasherInterface, SerializerInterface} from "../ServiceContracts"
 import MongodbCredentialProvider from "./Credential/MongodbCredentialProvider";
 import DatabaseCredentialProvider from "./Credential/DatabaseCredentialProvider";
 import CredentialProviderInterface from "./Credential/CredentialProviderInterface";
+import Credential from "./Credential/Credential";
+import {started} from "../Session/SessionEvents";
 
 
 @provider()
@@ -21,9 +23,7 @@ export default class AuthenticatorServiceProvider {
 
     register() {
         this.container.singleton(SessionAuthenticator, async () => {
-            const config = await this.container.make(Config);
-            return new SessionAuthenticator()
-                .setSessionAuthKey(config.auth.session.sessionAuthKey)
+            return new SessionAuthenticator();
         });
 
         this.container.singleton(CredentialProviderInterface, async () => {
@@ -44,10 +44,41 @@ export default class AuthenticatorServiceProvider {
             }
 
             return credentialProvider
+        }).made(CredentialProviderInterface, async (credentialProvider) => {
+            const config = await this.container.make("config");
+            if (credentialProvider instanceof DatabaseManagerInterface) {
+                credentialProvider
+                    .setTableName(config.auth.adapters.database["credentialTable"])
+                    .setIdentityField(config.auth.adapters.database["usernameField"])
+                    .setPasswordField(config.auth.adapters.database["passwordField"])
+            } else {
+                credentialProvider
+                    .setTableName(config.auth.adapters.mongodb["credentialCollection"])
+                    .setIdentityField(config.auth.adapters.mongodb["usernameField"])
+                    .setPasswordField(config.auth.adapters.mongodb["passwordField"])
+            }
         })
     }
 
-    async boot() {
 
-    };
+    async boot() {
+        const config       = await this.container.make(Config);
+        const eventEmitter = this.container.ee;
+        const serializer   = await this.container.make(SerializerInterface);
+
+        let sessionAuthenticator = await this.container.make(SessionAuthenticator);
+        sessionAuthenticator.setSessionAuthKey(config.auth.session.sessionAuthKey);
+        // when session is available, the SessionAuthenticator service will use session as a dependency
+        eventEmitter.on(started, (session) => {
+            sessionAuthenticator.setSession(session)
+        });
+
+
+        // register a Credential type
+        serializer.forType(Credential, (credential) => {
+            return credential.getIdentity()
+        },  (raw) => {
+            return new Credential(raw)
+        });
+    }
 }
