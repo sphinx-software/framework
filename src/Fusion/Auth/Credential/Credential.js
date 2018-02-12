@@ -1,10 +1,10 @@
 export default class Credential {
 
-    constructor(raw) {
-        this.raw = raw;
+    constructor(attributes) {
+        this.attributes = attributes;
     }
 
     getIdentity() {
-        return this.raw
+        return this.attributes
     }
 }
