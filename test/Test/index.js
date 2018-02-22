@@ -1,1 +1,1 @@
-// todo test cases here
+export AuthTestSuite from "./AuthTestSuite";

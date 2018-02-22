@@ -5,6 +5,7 @@
     ["module-resolver", {
       "alias": {
         "^WaveFunction/(.+)": "@sphinx-software/wave-function/build/WaveFunction/\\1",
+        "WaveFunction": "@sphinx-software/wave-function/build/WaveFunction",
         "Fusion": "./src/Fusion",
         "^Fusion/(.+)": "./src/Fusion\\1",
         "^Test": "./test/Test"
