@@ -1,7 +1,8 @@
 /**
  * Authenticator Service via Session
+ * @implements AuthenticatorInterface
  */
-export default class SessionAuthenticator {
+export default class Auth {
 
     constructor() {
         this.sessionAuthKey = null;
@@ -11,7 +12,7 @@ export default class SessionAuthenticator {
     /**
      * set session for auth service as a dependence
      * @param session
-     * @return {SessionAuthenticator}
+     * @return {Auth}
      */
     setSession(session) {
         this.session = session;
@@ -21,7 +22,7 @@ export default class SessionAuthenticator {
     /**
      *
      * @param keyName
-     * @return {SessionAuthenticator}
+     * @return {Auth}
      */
     setSessionAuthKey(keyName) {
         this.sessionAuthKey = keyName;
@@ -32,7 +33,7 @@ export default class SessionAuthenticator {
      * login with a credential
      * store credential to session
      * @param credential
-     * @return {SessionAuthenticator}
+     * @return {Auth}
      */
     login(credential) {
         this.session.set(this.sessionAuthKey, credential);
@@ -41,7 +42,7 @@ export default class SessionAuthenticator {
 
     /**
      * logout
-     * @return {SessionAuthenticator}
+     * @return {Auth}
      */
     logout() {
         this.session.unset(this.sessionAuthKey);
