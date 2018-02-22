@@ -1,15 +1,7 @@
 import lodash from 'lodash';
 export default class MassageBag {
 
-    constructor(data){
-        this.data = data ? data : {};
-    }
-
-    /**
-     *
-     * @param data
-     */
-    setData(data) {
+    constructor(data = {}){
         this.data = data;
     }
 

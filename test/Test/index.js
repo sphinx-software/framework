@@ -1,1 +1,1 @@
-export * from './testFlashBag';
+export * from './View/testFlashBag';
