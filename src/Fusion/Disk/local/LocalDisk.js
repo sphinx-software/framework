@@ -19,8 +19,8 @@ export default class LocalDisk {
      * @return {LocalDisk}
      */
     setDirectory(directory) {
-        if (!directory) throw new Error('E_DIRK_LOCAL: config dir is not null');
-        this.mkdir(directory);
+        if (!directory) throw new Error('E_DIRK_LOCAL: config directory is not null');
+        this._mkDir(directory);
         this.directory = directory;
         return this;
     }
@@ -33,7 +33,7 @@ export default class LocalDisk {
     createWriteStream(fileName) {
         let dir = path.join(this.directory, path.dirname(fileName));
         if (dir !== this.directory) {
-            this.mkdir(dir);
+            this._mkDir(dir);
         }
         return fs.createWriteStream(path.join(dir, path.basename(fileName)));
     }
@@ -43,15 +43,16 @@ export default class LocalDisk {
      * @param {string} directory
      * @return void;
      */
-    mkdir(directory) {
-        const sep     = path.sep;
+    _mkDir(directory) {
+        const sep = path.sep;
         const initDir = path.isAbsolute(directory) ? sep : '';
 
         directory.split(sep).reduce((parentDir, childDir) => {
             const curDir = path.resolve(__dirname, parentDir, childDir);
             try {
                 fs.mkdirSync(curDir);
-            } catch (error) {}
+            } catch (error) {
+            }
             return curDir;
         }, initDir);
     }
