@@ -18,16 +18,9 @@ export class DiskProvider {
 
                 diskManager.setDefaultAdapter(disk.default);
 
-                Object.keys(disk.disks)
-                    .filter(name => disk.disks[name].adapter === 'local')
-                    .forEach(name => {
-                        diskManager.extend(name,
+                diskManager.setConfigDisks(disk.disks);
 
-                            () => new LocalDisk().setDirectory(disk.disks[name].directory)
-
-                        );
-                    });
-
+                diskManager.registerForType('local', (config) => new LocalDisk().setDirectory(config.directory));
             });
     }
 
