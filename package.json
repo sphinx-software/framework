@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node node_modules/.bin/mocha --exit test/index",
-    "build": "node node_modules/.bin/babel src -d build",
+    "build": "npm test && node node_modules/.bin/babel src -d build",
     "prepublish": "npm run build"
   },
   "author": "rikky <rikky@sphinx-software.com>",
