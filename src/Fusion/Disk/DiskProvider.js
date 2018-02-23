@@ -22,7 +22,6 @@ export class DiskProvider {
 
                 diskManager.extend('local', (config) => new LocalDisk().setDirectory(config.directory));
 
-                // diskManager.registerForType('local', (config) => new LocalDisk().setDirectory(config.directory));
             });
     }
 

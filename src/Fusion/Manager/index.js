@@ -21,6 +21,13 @@ export default class Manager {
     defaultAdapter = null;
 
     /**
+     * The name for get driver of config
+     *
+     * @type {string}
+     */
+    propertyDriver = 'driver';
+
+    /**
      * List adapters factories will resolved
      *
      * @type {{ driver: String }}
@@ -47,6 +54,16 @@ export default class Manager {
 
     /**
      *
+     * @param {string} propertyDriver
+     * @returns {Manager}
+     */
+    setPropertyDriver(propertyDriver = 'driver') {
+        this.propertyDriver = propertyDriver;
+        return this;
+    }
+
+    /**
+     *
      * @param {{ driver: String }} configAdapters
      * @return {Manager}
      */
@@ -58,12 +75,15 @@ export default class Manager {
     /**
      * Extend this manager by registering an adapter factory
      *
-     * @param {string} driver
+     * @param {string | Array<string>} drivers
      * @param {Function} driverFactory
      * @return {Manager}
      */
-    extend(driver, driverFactory) {
-        this.factories[driver] = driverFactory;
+    extend(drivers, driverFactory) {
+        if (drivers instanceof string) {
+            drivers = [drivers];
+        }
+        drivers.map(driver => this.factories[driver] = driverFactory);
         return this;
     }
 
@@ -87,7 +107,11 @@ export default class Manager {
      * @param {string|null} adapterName
      * @return {*}
      */
-    adapter(adapterName = this.defaultAdapter) {
+    adapter(adapterName = null) {
+
+        if (!adapterName) {
+            adapterName = this.defaultAdapter;
+        }
 
         // If adapterName still a falsy value, consider as an error
         if (!adapterName) {
@@ -106,7 +130,7 @@ export default class Manager {
         }
 
         let config = this.configAdapters[adapterName];
-        if (!this.configAdapters[config.driver]) {
+        if (!this.factories[config.driver]) {
             throw new VError(`E_MANAGER: Driver [${config.driver}] is not supported`);
         }
 
