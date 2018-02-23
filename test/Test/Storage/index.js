@@ -1,0 +1,2 @@
+export DatabaseStorageAdapterIntegrationTest from "./DatabaseStorageAdapterIntegrationTestSuite";
+export DatabaseStorageAdapterTestSuite from "./DatabaseStorageAdapterTestSuite";
