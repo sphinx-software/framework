@@ -80,7 +80,7 @@ export default class Manager {
      * @return {Manager}
      */
     extend(drivers, driverFactory) {
-        if (drivers instanceof string) {
+        if (typeof drivers === 'string') {
             drivers = [drivers];
         }
         drivers.map(driver => this.factories[driver] = driverFactory);
