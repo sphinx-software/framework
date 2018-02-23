@@ -130,12 +130,13 @@ export default class Manager {
         }
 
         let config = this.configAdapters[adapterName];
-        if (!this.factories[config.driver]) {
-            throw new VError(`E_MANAGER: Driver [${config.driver}] is not supported`);
+        let driver = config[this.propertyDriver];
+        if (!this.factories[driver]) {
+            throw new VError(`E_MANAGER: Driver [${driver}] is not supported`);
         }
 
-        let factoryFunction = lodash.isFunction(this.factories[config.driver])
-            ? this.factories[config.driver] : this.factories[config.driver].make
+        let factoryFunction = lodash.isFunction(this.factories[driver])
+            ? this.factories[driver] : this.factories[driver].make
         ;
 
         // If we have the adapter factory in the extend list,
