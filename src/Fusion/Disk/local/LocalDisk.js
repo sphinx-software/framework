@@ -69,7 +69,7 @@ export default class LocalDisk {
     /**
      *
      * @param {string} fileName
-     * @return {Promise<void>}
+     * @return {Promise<boolean>}
      */
     exists(fileName) {
         return this.fsExists(path.join(this.directory, fileName));
