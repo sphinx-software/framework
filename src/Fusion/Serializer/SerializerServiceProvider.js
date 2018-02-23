@@ -3,7 +3,7 @@ import {SerializerInterface} from "../ServiceContracts";
 import Serializer from "./Serializer";
 
 @provider()
-export class SerializerProvider {
+export default class SerializerProvider {
 
     constructor(container, fusion) {
         this.container = container;
