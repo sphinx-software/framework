@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  build:
+    build: "."
+    volumes:
+      - .:/fusion
+      - /fusion/node_modules
+    command: npm run build
+    environment:
+      - FUSION_IN_DOCKER="yes"
+    links:
+      - mysql
+
+  test:
+    build: "."
+    environment:
+      - NODE_ENV=test
+      - FUSION_IN_DOCKER="yes"
+    volumes:
+      - .:/fusion
+      - /fusion/node_modules
+    command: npm run test
+    links:
+      - mysql
+
+  mysql:
+    image: "mysql:5.5"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=fusion
+      - MYSQL_PASSWORD=fusion
+      - MYSQL_DATABASE=fusion
