@@ -105,13 +105,18 @@ export default class Manager {
             throw new VError(`E_MANAGER: Adapter [${adapterName}] is not supported`);
         }
 
-        let factoryFunction = lodash.isFunction(this.factories[adapterName])
-            ? this.factories[adapterName] : this.factories[adapterName].make
+        let config = this.configAdapters[adapterName];
+        if (!this.configAdapters[config.driver]) {
+            throw new VError(`E_MANAGER: Driver [${config.driver}] is not supported`);
+        }
+
+        let factoryFunction = lodash.isFunction(this.factories[config.driver])
+            ? this.factories[config.driver] : this.factories[config.driver].make
         ;
 
         // If we have the adapter factory in the extend list,
         // we'll resolve the adapter and also cached it.
-        this.adapters[adapterName] = factoryFunction(this.configAdapters[adapterName]);
+        this.adapters[adapterName] = factoryFunction(config);
 
         return this.adapters[adapterName];
     }
