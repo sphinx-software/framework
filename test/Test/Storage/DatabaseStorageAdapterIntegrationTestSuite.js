@@ -48,13 +48,13 @@ export default class DatabaseStorageAdapterIntegrationTestSuite extends Database
     }
 
     @testCase()
-    async testSet() {
+    async testSetAValueSuccessful() {
         await this.databaseStorageAdapter.set('foo', 'bar');
         assert(await this.dbm.from('test_storage').where('key', '=', 'foo').first());
     }
 
     @testCase()
-    async testGet() {
+    async testGetAValueSuccessful() {
         await this.dbm.from('test_storage').insert({
             key: 'foo',
             value: this.serializer.serialize({
@@ -63,5 +63,20 @@ export default class DatabaseStorageAdapterIntegrationTestSuite extends Database
             created_at: new Date().getTime()
         });
         assert.deepEqual(await this.databaseStorageAdapter.get('foo'), {'hello': 'world'});
+    }
+
+    @testCase()
+    async testUnsetAValueSuccessful() {
+        await this.dbm.from('test_storage').insert({
+            key: 'foo',
+            value: this.serializer.serialize({
+                'hello': 'world'
+            }),
+            created_at: new Date().getTime()
+        });
+
+        await this.databaseStorageAdapter.unset('foo');
+
+        assert.isNotOk(await this.dbm.from('test_storage').where('key', '=', 'foo').first());
     }
 }

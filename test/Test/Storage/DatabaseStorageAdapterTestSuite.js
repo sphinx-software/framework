@@ -44,7 +44,7 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
     }
 
     @testCase()
-    async testSet() {
+    async testSetAValueSuccessful() {
         let clock = sinon.useFakeTimers();
 
         let currentTime = 3;
@@ -61,7 +61,7 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
     }
 
     @testCase()
-    async testGet() {
+    async testGetBackTheValueViaTheKey() {
         this.firstSpy.returns(Promise.resolve({value: this.serializer.serialize("bar")}));
 
         let result = await this.adapter.get("foo");
@@ -75,7 +75,7 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
     }
 
     @testCase()
-    async testUnset() {
+    async testUnsetAKey() {
         await this.adapter.unset('foo');
         assert(this.fromSpy.calledWith('storage'));
         assert(this.whereSpy.calledWith('key', '=', 'foo'));
