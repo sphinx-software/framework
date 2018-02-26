@@ -1,5 +1,6 @@
 import {testCase} from "WaveFunction/decorators";
 import {assert} from "chai";
+import sinon from "sinon";
 import DatabaseIntegrationTest from "../DatabaseIntegrationTest";
 import * as SerializerPackage from "../../../src/Fusion/Serializer";
 import {SerializerInterface} from "../../../src/Fusion";
@@ -78,5 +79,25 @@ export default class DatabaseStorageAdapterIntegrationTestSuite extends Database
         await this.databaseStorageAdapter.unset('foo');
 
         assert.isNotOk(await this.dbm.from('test_storage').where('key', '=', 'foo').first());
+    }
+
+    @testCase()
+    async testWhenTheValueIsExpiredTime() {
+        let clock = sinon.useFakeTimers();
+        let expiredTime = 1000;
+        await this.dbm.from('test_storage').insert({
+            key: 'foo',
+            value: this.serializer.serialize({
+                'hello': 'world'
+            }),
+            created_at: new Date().getTime()
+        });
+
+        clock.tick(expiredTime + 1);
+
+        assert.isNull(await this.databaseStorageAdapter.get('foo', {
+            expiredTime: expiredTime
+        }));
+
     }
 }
