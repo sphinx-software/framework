@@ -61,7 +61,7 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
     }
 
     @testCase()
-    async testGetBackTheValueViaTheKey() {
+    async testGetWhenTheValueIsExisted() {
         this.firstSpy.returns(Promise.resolve({value: this.serializer.serialize("bar")}));
 
         let result = await this.adapter.get("foo");
@@ -71,7 +71,19 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
         assert(this.firstSpy.called);
         assert(this.orderBySpy.calledWith('created_at', 'desc'));
         assert.equal(result, "bar");
+    }
 
+    @testCase()
+    async testGetWhenTheValueIsNotExisted() {
+        this.firstSpy.returns(Promise.resolve(null));
+
+        let result = await this.adapter.get("someKey");
+
+        assert(this.fromSpy.calledWith('storage'));
+        assert(this.whereSpy.calledWith('key', '=', 'someKey'));
+        assert(this.firstSpy.called);
+        assert(this.orderBySpy.calledWith('created_at', 'desc'));
+        assert.equal(result, null);
     }
 
     @testCase()
@@ -80,5 +92,28 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
         assert(this.fromSpy.calledWith('storage'));
         assert(this.whereSpy.calledWith('key', '=', 'foo'));
         assert(this.delSpy.called);
+    }
+
+    @testCase()
+    async testWhenTheValueIsExpiredDate() {
+        let clock = sinon.useFakeTimers();
+        let expiredTime = 1000;
+        let options = {
+            expiredTime: expiredTime
+        };
+
+        this.firstSpy.returns(Promise.resolve({
+            value: this.serializer.serialize("bar"),
+            created_at: new Date().getTime()
+        }));
+
+        clock.tick(expiredTime + 1);
+
+        let result = await this.adapter.get("foo", options);
+
+        assert(this.fromSpy.calledWith('storage'));
+        assert(this.whereSpy.calledWith('key', '=', 'foo'));
+        assert(this.firstSpy.called);
+        assert.isNull(result);
     }
 }

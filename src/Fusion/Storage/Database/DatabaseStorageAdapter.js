@@ -54,17 +54,21 @@ export default class DatabaseStorageAdapter {
     }
 
     /**
-     *
      * @param key
+     * @param options
      * @return {Promise<*>}
      */
-    async get(key) {
-
+    async get(key, options = null) {
+        let now = new Date().getTime();
         let data = await this.connection.query()
             .from(this.table)
             .where('key', '=', key)
             .orderBy('created_at', 'desc')
             .first();
+
+        if (!data || options && (now > options.expiredTime + data.created_at)) {
+            return null
+        }
 
         return this.serializer.deserialize(data.value);
     }
