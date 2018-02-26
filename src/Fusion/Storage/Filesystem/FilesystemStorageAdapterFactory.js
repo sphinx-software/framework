@@ -1,3 +1,4 @@
+import fs from 'fs';
 import Convention from "./StorageFileNamingConvention";
 import Adapter from "./FilesystemStorageAdapter";
 import {singleton} from "../../MetaInjector/index";
@@ -19,7 +20,8 @@ export default class FilesystemStorageAdapterFactory {
     make(config) {
         return new Adapter(
             this.serializer,
-            new Convention().setPrefix(config.prefix)
+            new Convention().setPrefix(config.prefix),
+            fs
         ).setStorageDirectory(config.directory);
     }
 }

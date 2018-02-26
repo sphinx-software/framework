@@ -1,16 +1,23 @@
 import path from 'path';
-import fs from 'fs';
 
 export default class FileSystemAdapter {
+
+    serializer;
+
+    naming;
+
+    fs;
 
     /**
      *
      * @param {SerializerInterface} serializer
      * @param {StorageFileNamingConvention} naming
+     * @param fs
      */
-    constructor(serializer, naming) {
+    constructor(serializer, naming, fs) {
         this.serializer = serializer;
         this.naming     = naming;
+        this.fs         = fs;
     }
 
     /**
@@ -37,7 +44,7 @@ export default class FileSystemAdapter {
         // Considering any error occurred as no data
         let serializedData = null;
         try {
-            serializedData = fs.readFileSync(fileName);
+            serializedData = this.fs.readFileSync(fileName);
         } catch (error) {
             serializedData = null;
         }
@@ -58,7 +65,7 @@ export default class FileSystemAdapter {
 
         let serializedData = this.serializer.serialize(value);
 
-        fs.writeFileSync(fileName, serializedData);
+        this.fs.writeFileSync(fileName, serializedData);
     }
 
     /**
@@ -72,18 +79,18 @@ export default class FileSystemAdapter {
         // Swallow error. Considering any error as no item
         // in the storage, so the error is a false-positive
         try {
-            fs.unlinkSync(fileName);
+            this.fs.unlinkSync(fileName);
         } catch (error) {
             // Do nothing here, hehe ;)
         }
     }
 
     async flush() {
-        let files = fs.readdirSync(this.directory);
+        let files = this.fs.readdirSync(this.directory);
 
         files.forEach(file => {
             if (file.endsWith('.dat')) {
-                fs.unlinkSync(path.normalize(path.join(this.directory, file)));
+                this.fs.unlinkSync(path.normalize(path.join(this.directory, file)));
             }
         });
     }
