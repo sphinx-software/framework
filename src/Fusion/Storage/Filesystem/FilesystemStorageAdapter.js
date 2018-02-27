@@ -35,9 +35,11 @@ export default class FileSystemAdapter {
      *
      * @param {string} key
      * @param {*} valueIfNotExisted
+     * @param {Object} options
      * @return {Promise.<*>}
      */
-    async get(key, valueIfNotExisted = null) {
+    async get(key, valueIfNotExisted = null, options = {}) {
+        let now = new Date().getTime();
         let fileName   = this.naming.nameFor(this.directory, key);
 
         // Don't reject the error.
@@ -49,9 +51,14 @@ export default class FileSystemAdapter {
             serializedData = null;
         }
 
-        return serializedData
-            ? this.serializer.deserialize(serializedData)
-            : valueIfNotExisted;
+        // When the data is expired time
+        if (options.ttl && (serializedData.created_at + options.ttl < now)) {
+            serializedData = null;
+        }
+
+        if (!serializedData) return valueIfNotExisted;
+
+        return  this.serializer.deserialize(serializedData.value)
     }
 
     /**
@@ -63,9 +70,10 @@ export default class FileSystemAdapter {
     async set(key, value) {
         let fileName = this.naming.nameFor(this.directory, key);
 
-        let serializedData = this.serializer.serialize(value);
-
-        this.fs.writeFileSync(fileName, serializedData);
+        this.fs.writeFileSync(fileName, {
+            value: this.serializer.serialize(value),
+            created_at: new Date().getTime()
+        });
     }
 
     /**
