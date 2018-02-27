@@ -31,29 +31,15 @@ export default class FileSystemAdapter {
         return this;
     }
 
-    /**
-     *
-     * @param ttl time to live
-     * @return {FileSystemAdapter}
-     */
-    setDefaultTTL(ttl) {
-        this.ttl = ttl;
-        return this;
-    }
 
     /**
      *
      * @param {string} key
      * @param {*} valueIfNotExisted
-     * @param {Object} options
      * @return {Promise.<*>}
      */
-    async get(key, valueIfNotExisted = null, options = {}) {
-        let now = new Date().getTime();
+    async get(key, valueIfNotExisted = null) {
         let fileName  = this.naming.nameFor(this.directory, key);
-
-        // use default ttl when the ttl option is not exist
-        let ttl = options.ttl? options.ttl : this.ttl;
 
         // Don't reject the error.
         // Considering any error occurred as no data
@@ -61,20 +47,10 @@ export default class FileSystemAdapter {
         try {
             serializedData = this.fs.readFileSync(fileName);
         } catch (error) {
-            return valueIfNotExisted;
+            serializedData = null;
         }
 
-        // when the value not exist
-        if (!serializedData) {
-            return valueIfNotExisted;
-        }
-
-        // When the data is expired time
-        if (serializedData.createdAt + ttl < now) {
-            return valueIfNotExisted;
-        }
-
-        return this.serializer.deserialize(serializedData.value);
+        return serializedData? this.serializer.deserialize(serializedData) : valueIfNotExisted;
     }
 
     /**
@@ -86,10 +62,7 @@ export default class FileSystemAdapter {
     async set(key, value) {
         let fileName = this.naming.nameFor(this.directory, key);
 
-        this.fs.writeFileSync(fileName, {
-            value: this.serializer.serialize(value),
-            createdAt: new Date().getTime()
-        });
+        this.fs.writeFileSync(fileName, this.serializer.serialize(value));
     }
 
     /**

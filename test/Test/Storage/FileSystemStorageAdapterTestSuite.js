@@ -29,8 +29,7 @@ export default class FileSystemStorageAdapterTestSuite extends TestSuite {
         this.namming = new StorageFileNamingConvention();
         this.namming.setPrefix('somePrefix');
         this.adapter = new FileSystemAdapter(this.serializer, this.namming, this.fs);
-        this.adapter.setStorageDirectory('someDir')
-            .setDefaultTTL(24*60*60*1000);
+        this.adapter.setStorageDirectory('someDir');
     }
 
     afterEach() {
@@ -38,30 +37,21 @@ export default class FileSystemStorageAdapterTestSuite extends TestSuite {
         this.writeFileSyncSpy.restore();
         this.unlinkSyncSpy.restore();
         this.readdirSyncSpy.restore();
-        this.clock.restore();
     }
 
     @testCase()
     async testSetTheValueSuccessful() {
         await this.adapter.set('someKey', {foo: 'bar'});
 
-        this.clock.tick(0);
-
         assert(this.writeFileSyncSpy.calledWith(
             this.namming.nameFor('someDir', 'someKey'),
-            {
-                value: this.serializer.serialize({foo: 'bar'}),
-                createdAt: new Date().getTime()
-            }
+            this.serializer.serialize({foo: 'bar'}),
         ));
     }
 
     @testCase()
     async testGetTheExistedValueSuccessful() {
-        this.readFileSyncSpy.returns({
-            value: this.serializer.serialize({foo: 'bar'}),
-            createdAt: new Date().getTime()
-        });
+        this.readFileSyncSpy.returns(this.serializer.serialize({foo: 'bar'}));
 
         assert.deepEqual({foo: 'bar'}, await this.adapter.get('someKey'));
         assert(this.readFileSyncSpy.calledWith(
@@ -94,38 +84,5 @@ export default class FileSystemStorageAdapterTestSuite extends TestSuite {
         await this.adapter.flush();
         assert(this.unlinkSyncSpy.calledWith('someDir/someFile.dat'));
         assert(this.unlinkSyncSpy.calledWith('someDir/someOtherFile.dat'));
-    }
-
-    @testCase()
-    async testGetTheValueExpiredTime() {
-        this.readFileSyncSpy.returns({
-            value: this.serializer.serialize({
-                foo: 'bar',
-            }),
-            createdAt: new Date().getTime()
-        });
-        let options = {
-            ttl: 1000
-        };
-        // fake the time
-        this.clock.tick(options.ttl + 1);
-
-        assert.isNull(await this.adapter.get('someKey', null, options))
-    }
-
-    @testCase()
-    async testGetValueNotExpiredTime() {
-        this.readFileSyncSpy.returns({
-            value: this.serializer.serialize({
-                foo: 'bar',
-            }),
-            createdAt: new Date().getTime()
-        });
-        let options = {
-            ttl: 1000
-        };
-        // fake the time
-        this.clock.tick(options.ttl - 1);
-        assert.deepEqual({foo: 'bar'}, await this.adapter.get('someKey', null, options))
     }
 }
