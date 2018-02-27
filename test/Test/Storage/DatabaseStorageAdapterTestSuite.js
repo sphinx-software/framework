@@ -41,22 +41,25 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
 
         this.adapter    = new DatabaseStorageAdapter(connectionInterface, this.serializer);
         this.adapter.setTable('storage');
+        this.clock = sinon.useFakeTimers(new Date().getTime());
+    }
+
+    afterEach() {
+
     }
 
     @testCase()
     async testSetAValueSuccessful() {
-        let clock = sinon.useFakeTimers();
-
-        let currentTime = 3;
-        clock.tick(currentTime);
 
         await this.adapter.set('foo', 'bar');
+
+        this.clock.tick(0);
 
         assert(this.fromSpy.calledWith('storage'));
         assert(this.insertSpy.calledWith({
             key: 'foo',
             value: this.serializer.serialize("bar"),
-            created_at: currentTime
+            created_at: new Date().getTime()
         }));
     }
 
@@ -96,7 +99,6 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
 
     @testCase()
     async testWhenTheValueIsExpiredDate() {
-        let clock = sinon.useFakeTimers();
         let expiredTime = 1000;
         let options = {
             expiredTime: expiredTime
@@ -107,7 +109,7 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
             created_at: new Date().getTime()
         }));
 
-        clock.tick(expiredTime + 1);
+        this.clock.tick(expiredTime + 1);
 
         let result = await this.adapter.get("foo", options);
 
