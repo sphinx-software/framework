@@ -4,7 +4,7 @@ export class TranslateViewFilter {
         this.translator = translator;
     }
 
-    run(key) {
-        return this.translator.translate(key);
+    run(key, ...parameter) {
+        return this.translator.translate(key, ...parameter);
     }
 }
