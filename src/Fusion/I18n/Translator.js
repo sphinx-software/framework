@@ -17,8 +17,9 @@ export default class Translator {
     /**
      *
      * @param key
+     * @param parameters
      */
-    translate(key) {
-        return this.i18next.t(key);
+    translate(key, ...parameters) {
+        return this.i18next.t(key, ...parameters);
     }
 }
