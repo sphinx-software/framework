@@ -20,6 +20,12 @@ export default class DatabaseStorageAdapter {
 
     /**
      *
+     * @type {Number}
+     */
+    ttl        = null;
+
+    /**
+     *
      * @param connection
      * @param {Serializer} serializer
      */
@@ -35,6 +41,11 @@ export default class DatabaseStorageAdapter {
      */
     setTable(table) {
         this.table = table;
+        return this;
+    }
+
+    setDefaultTTL(ttl) {
+        this.ttl = ttl;
         return this;
     }
 
@@ -55,22 +66,25 @@ export default class DatabaseStorageAdapter {
 
     /**
      * @param key
+     * @param valueDefaultIfNotExist
      * @param options
      * @return {Promise<*>}
      */
-    async get(key, options = null) {
+    async get(key, valueDefaultIfNotExist = null, options = {}) {
         let now = new Date().getTime();
+        let ttl = options.ttl || this.ttl;
+
         let data = await this.connection.query()
             .from(this.table)
             .where('key', '=', key)
-            .orderBy('created_at', 'desc')
+            .where('created_at', '>=', now - ttl)
             .first();
 
-        if (!data || options && (now > options.expiredTime + data.created_at)) {
-            return null
+        if (!data) {
+            return valueDefaultIfNotExist;
         }
 
-        return this.serializer.deserialize(data.value);
+        return data? this.serializer.deserialize(data.value) : valueDefaultIfNotExist;
     }
 
     /**

@@ -40,12 +40,20 @@ export default class DatabaseStorageAdapterIntegrationTestSuite extends Database
             this.dbm.connection(),
             this.serializer
         );
-        this.databaseStorageAdapter.setTable('test_storage');
+        this.databaseStorageAdapter
+            .setTable('test_storage')
+            .setDefaultTTL(24*60*60*1000)
+        ;
+        this.clock = sinon.useFakeTimers();
+
         await this.dbm.from('test_storage').truncate();
     }
 
     async afterEach() {
         await this.dbm.from('test_storage').truncate();
+        this.serializer = null;
+        this.databaseStorageAdapter = null;
+        this.clock.restore();
     }
 
     @testCase()
@@ -63,7 +71,7 @@ export default class DatabaseStorageAdapterIntegrationTestSuite extends Database
             }),
             created_at: new Date().getTime()
         });
-        assert.deepEqual(await this.databaseStorageAdapter.get('foo'), {'hello': 'world'});
+        assert.deepEqual({'hello': 'world'}, await this.databaseStorageAdapter.get('foo'));
     }
 
     @testCase()
@@ -83,8 +91,7 @@ export default class DatabaseStorageAdapterIntegrationTestSuite extends Database
 
     @testCase()
     async testWhenTheValueIsExpiredTime() {
-        let clock = sinon.useFakeTimers();
-        let expiredTime = 1000;
+        let ttl = 10;
         await this.dbm.from('test_storage').insert({
             key: 'foo',
             value: this.serializer.serialize({
@@ -93,10 +100,10 @@ export default class DatabaseStorageAdapterIntegrationTestSuite extends Database
             created_at: new Date().getTime()
         });
 
-        clock.tick(expiredTime + 1);
+        this.clock.tick(ttl + 5000);
 
-        assert.isNull(await this.databaseStorageAdapter.get('foo', {
-            expiredTime: expiredTime
+        assert.isNull(await this.databaseStorageAdapter.get('foo', null, {
+            ttl: ttl
         }));
 
     }

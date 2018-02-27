@@ -24,7 +24,7 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
         };
 
         this.serializer = new Serializer();
-        this.serializer.forType(String, i => i, i => i);
+        this.serializer.forType(Object, i => i, i => i);
 
         this.fromSpy = sinon.stub(connection, 'from');
         this.insertSpy = sinon.stub(connection, 'insert');
@@ -39,41 +39,49 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
         this.orderBySpy.returns(connection);
 
 
-        this.adapter    = new DatabaseStorageAdapter(connectionInterface, this.serializer);
-        this.adapter.setTable('storage');
-        this.clock = sinon.useFakeTimers(new Date().getTime());
+        this.adapter = new DatabaseStorageAdapter(connectionInterface, this.serializer);
+        this.defaultTTl = 24*60*60*1000;
+        this.adapter
+            .setTable('storage')
+            .setDefaultTTL(this.defaultTTl)
+        ;
     }
 
     afterEach() {
-
+        this.fromSpy.restore();
+        this.whereSpy.restore();
+        this.insertSpy.restore();
+        this.orderBySpy.restore();
     }
 
     @testCase()
     async testSetAValueSuccessful() {
 
-        await this.adapter.set('foo', 'bar');
-
-        this.clock.tick(0);
+        await this.adapter.set('somekey', {foo: 'bar'});
 
         assert(this.fromSpy.calledWith('storage'));
         assert(this.insertSpy.calledWith({
-            key: 'foo',
-            value: this.serializer.serialize("bar"),
+            key: 'somekey',
+            value: this.serializer.serialize({foo: 'bar'}),
             created_at: new Date().getTime()
         }));
     }
 
     @testCase()
     async testGetWhenTheValueIsExisted() {
-        this.firstSpy.returns(Promise.resolve({value: this.serializer.serialize("bar")}));
+        this.firstSpy.returns(Promise.resolve({
+            key: 'someKey',
+            value: this.serializer.serialize({foo: 'bar'}),
+            created_at: new Date().getTime()
+        }));
 
-        let result = await this.adapter.get("foo");
+        let result = await this.adapter.get("someKey");
 
         assert(this.fromSpy.calledWith('storage'));
-        assert(this.whereSpy.calledWith('key', '=', 'foo'));
+        assert(this.whereSpy.calledWith('key', '=', 'someKey'));
+        assert(this.whereSpy.calledWith('created_at', '>=', (new Date().getTime() - this.defaultTTl)));
         assert(this.firstSpy.called);
-        assert(this.orderBySpy.calledWith('created_at', 'desc'));
-        assert.equal(result, "bar");
+        assert.deepEqual(result, {foo: 'bar'});
     }
 
     @testCase()
@@ -84,8 +92,8 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
 
         assert(this.fromSpy.calledWith('storage'));
         assert(this.whereSpy.calledWith('key', '=', 'someKey'));
+        assert(this.whereSpy.calledWith('created_at', '>=', (new Date().getTime() - this.defaultTTl)));
         assert(this.firstSpy.called);
-        assert(this.orderBySpy.calledWith('created_at', 'desc'));
         assert.equal(result, null);
     }
 
@@ -99,23 +107,43 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
 
     @testCase()
     async testWhenTheValueIsExpiredDate() {
-        let expiredTime = 1000;
+        let now = new Date().getTime();
         let options = {
-            expiredTime: expiredTime
+            ttl: 1000
+        };
+
+        this.firstSpy.returns(Promise.resolve(null));
+
+        let result = await this.adapter.get("someKey", null, options);
+
+        assert(this.fromSpy.calledWith('storage'));
+        assert(this.whereSpy.calledWith('key', '=', 'someKey'));
+        assert(this.whereSpy.calledWith('created_at', '>=', now - options.ttl));
+        assert(this.firstSpy.called);
+        assert.isNull(result);
+    }
+
+    @testCase()
+    async testWhenTheValueIsNotExpireDate() {
+        let now = new Date().getTime();
+        let options = {
+            ttl: 1000
         };
 
         this.firstSpy.returns(Promise.resolve({
-            value: this.serializer.serialize("bar"),
-            created_at: new Date().getTime()
+            key: 'someKey',
+            value: this.serializer.serialize({
+                foo: 'bar'
+            }),
+            created_at: now
         }));
 
-        this.clock.tick(expiredTime + 1);
-
-        let result = await this.adapter.get("foo", options);
+        let result = await this.adapter.get("someKey", null, options);
 
         assert(this.fromSpy.calledWith('storage'));
-        assert(this.whereSpy.calledWith('key', '=', 'foo'));
+        assert(this.whereSpy.calledWith('key', '=', 'someKey'));
+        assert(this.whereSpy.calledWith('created_at', '>=', now - options.ttl));
         assert(this.firstSpy.called);
-        assert.isNull(result);
+        assert.deepEqual(result, {foo: 'bar'});
     }
 }
