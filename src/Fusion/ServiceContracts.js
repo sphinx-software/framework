@@ -104,7 +104,6 @@ export class StorageAdapterFactoryInterface {
     make(config) { }
 }
 
-
 /**
  * The universal interface for cache service
  *
@@ -222,7 +221,6 @@ export class ViewFactoryInterface {
      */
     make(template, data = {}) { }
 }
-
 
 /**
  * The universal interface for serializer service
@@ -369,6 +367,55 @@ export class DatabaseManagerInterface {
     from(table, connection = null) {
 
     }
+}
+
+/**
+ * @interface
+ */
+export class DiskInterface {
+
+    /**
+     *
+     * @param {String} fileName
+     * @param {'public'|'private'} permission
+     * @return {WriteStream}
+     */
+    createWriteStream(fileName, permission) {}
+
+    /**
+     *
+     * @param {String} fileName
+     * @return {ReadableStream}
+     */
+    createReadStream(fileName) {}
+
+    /**
+     *
+     * @param {String} fileName
+     * @return {Promise<boolean>}
+     */
+    exists(fileName) {}
+
+    /**
+     *
+     * @param {String} fileName
+     * @return {Promise<boolean>}
+     */
+    delete(fileName) {}
+
+}
+
+/**
+ * @interface
+ */
+export class DiskManagerInterface {
+
+    /**
+     *
+     * @param name
+     * @return {DiskInterface}
+     */
+    disk(name = null) {}
 }
 
 export const Config = 'config';

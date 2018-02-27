@@ -59,7 +59,6 @@ export class Fusion {
         let providers = this.getByManifest('fusion.provider').map(Provider => new Provider(container, fusion));
 
         providers.forEach(provider => {
-            console.info(`registering ${chalk.cyan(provider.constructor.name)}`);
             provider.register();
         });
 
@@ -70,7 +69,6 @@ export class Fusion {
         for(let index = 0; index < havingBootProviders.length; index ++) {
             let provider = havingBootProviders[index];
             // early booted
-            console.info(`booting ${chalk.cyan(provider.constructor.name)}`);
             await provider.boot();
         }
 
