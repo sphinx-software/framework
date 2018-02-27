@@ -29,7 +29,8 @@ export default class FileSystemStorageAdapterTestSuite extends TestSuite {
         this.namming = new StorageFileNamingConvention();
         this.namming.setPrefix('somePrefix');
         this.adapter = new FileSystemAdapter(this.serializer, this.namming, this.fs);
-        this.adapter.setStorageDirectory('someDir');
+        this.adapter.setStorageDirectory('someDir')
+            .setDefaultTTL(24*60*60*1000);
     }
 
     afterEach() {
@@ -50,7 +51,7 @@ export default class FileSystemStorageAdapterTestSuite extends TestSuite {
             this.namming.nameFor('someDir', 'someKey'),
             {
                 value: this.serializer.serialize({foo: 'bar'}),
-                created_at: new Date().getTime()
+                createdAt: new Date().getTime()
             }
         ));
     }
@@ -59,7 +60,7 @@ export default class FileSystemStorageAdapterTestSuite extends TestSuite {
     async testGetTheExistedValueSuccessful() {
         this.readFileSyncSpy.returns({
             value: this.serializer.serialize({foo: 'bar'}),
-            created_at: new Date().getTime()
+            createdAt: new Date().getTime()
         });
 
         assert.deepEqual({foo: 'bar'}, await this.adapter.get('someKey'));
@@ -101,7 +102,7 @@ export default class FileSystemStorageAdapterTestSuite extends TestSuite {
             value: this.serializer.serialize({
                 foo: 'bar',
             }),
-            created_at: new Date().getTime()
+            createdAt: new Date().getTime()
         });
         let options = {
             ttl: 1000
@@ -118,7 +119,7 @@ export default class FileSystemStorageAdapterTestSuite extends TestSuite {
             value: this.serializer.serialize({
                 foo: 'bar',
             }),
-            created_at: new Date().getTime()
+            createdAt: new Date().getTime()
         });
         let options = {
             ttl: 1000
