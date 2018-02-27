@@ -16,7 +16,6 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
             first: () => {},
             where: () => {},
             del: () => {},
-            orderBy: () => {}
         };
 
         let connectionInterface = {
@@ -31,32 +30,31 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
         this.firstSpy = sinon.stub(connection, 'first');
         this.whereSpy = sinon.stub(connection, 'where');
         this.delSpy = sinon.stub(connection, 'del');
-        this.orderBySpy = sinon.stub(connection, 'orderBy');
 
         this.fromSpy.returns(connection);
         this.whereSpy.returns(connection);
         this.insertSpy.returns(connection);
-        this.orderBySpy.returns(connection);
-
 
         this.adapter = new DatabaseStorageAdapter(connectionInterface, this.serializer);
-        this.defaultTTl = 24*60*60*1000;
         this.adapter
             .setTable('storage')
-            .setDefaultTTL(this.defaultTTl)
+            .setDefaultTTL(60*1000)
         ;
+        this.clock = sinon.useFakeTimers();
     }
 
     afterEach() {
         this.fromSpy.restore();
+        this.firstSpy.restore();
         this.whereSpy.restore();
         this.insertSpy.restore();
-        this.orderBySpy.restore();
+        this.delSpy.restore();
+
+        this.clock.restore();
     }
 
     @testCase()
     async testSetAValueSuccessful() {
-
         await this.adapter.set('somekey', {foo: 'bar'});
 
         assert(this.fromSpy.calledWith('storage'));
@@ -69,30 +67,34 @@ export default class DatabaseStorageAdapterTestSuite extends TestSuite {
 
     @testCase()
     async testGetWhenTheValueIsExisted() {
+        let now = new Date().getTime();
+        this.adapter.setDefaultTTL(2000);
         this.firstSpy.returns(Promise.resolve({
             key: 'someKey',
             value: this.serializer.serialize({foo: 'bar'}),
-            created_at: new Date().getTime()
+            created_at: now
         }));
 
         let result = await this.adapter.get("someKey");
 
         assert(this.fromSpy.calledWith('storage'));
         assert(this.whereSpy.calledWith('key', '=', 'someKey'));
-        assert(this.whereSpy.calledWith('created_at', '>=', (new Date().getTime() - this.defaultTTl)));
+        assert(this.whereSpy.calledWith('created_at', '>=', (now - 2000)));
         assert(this.firstSpy.called);
         assert.deepEqual(result, {foo: 'bar'});
     }
 
     @testCase()
     async testGetWhenTheValueIsNotExisted() {
+        this.adapter.setDefaultTTL(2000);
         this.firstSpy.returns(Promise.resolve(null));
 
         let result = await this.adapter.get("someKey");
 
+
         assert(this.fromSpy.calledWith('storage'));
         assert(this.whereSpy.calledWith('key', '=', 'someKey'));
-        assert(this.whereSpy.calledWith('created_at', '>=', (new Date().getTime() - this.defaultTTl)));
+        assert(this.whereSpy.calledWith('created_at', '>=', (new Date().getTime() - 2000)));
         assert(this.firstSpy.called);
         assert.equal(result, null);
     }
