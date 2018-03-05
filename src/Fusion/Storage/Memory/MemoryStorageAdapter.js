@@ -1,5 +1,4 @@
 import lodash         from 'lodash';
-import utils          from '../utils';
 
 /**
  * For development & testing purpose only.
@@ -32,7 +31,7 @@ export default class MemoryStorageAdapter {
      * @return {Array.<T>}
      */
     loadStore() {
-        return this.store.filter(item => utils.isNotExpired(item.expiredAt));
+        return this.store.filter(item => this.isNotExpired(item.expiredAt));
     }
 
     /**
@@ -68,7 +67,7 @@ export default class MemoryStorageAdapter {
             key      : key,
             value    : value,
             tags     : options.tags || [],
-            expiredAt: utils.expiredDateFromNow(options.ttl || this.defaultTTL)
+            expiredAt: this.expiredDateFromNow(options.ttl || this.defaultTTL)
         });
     }
 
@@ -96,4 +95,41 @@ export default class MemoryStorageAdapter {
     async cleanup() {
         this.store = this.loadStore();
     }
+
+    /**
+     * @protected
+     * @param date
+     * @param ttl
+     * @return {Date}
+     */
+    expiredDateFrom (date, ttl) {
+        return new Date(date.getTime() + ttl);
+    };
+
+    /**
+     * @protected
+     * @param ttl
+     * @return {*}
+     */
+    expiredDateFromNow (ttl) {
+        return this.expiredDateFrom(new Date(), ttl);
+    };
+
+    /**
+     * @protected
+     * @param expiredDate
+     * @return {boolean}
+     */
+    isExpired (expiredDate) {
+        return Date.now() > expiredDate.getTime();
+    };
+
+    /**
+     * @protected
+     * @param expiredDate
+     * @return {boolean}
+     */
+    isNotExpired (expiredDate) {
+        return !this.isExpired(expiredDate);
+    };
 }
