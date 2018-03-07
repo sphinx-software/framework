@@ -1,11 +1,11 @@
 version: 2
 
 jobs:
-  build:
+  test:
     docker:
       - image: node:carbon
 
-    working_directory: ~/repo
+    working_directory: ~/fusion
 
     steps:
       - checkout
@@ -14,8 +14,6 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
-
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
       - run: npm install
 
@@ -26,6 +24,33 @@ jobs:
 
       - run: npm test
 
-      - run: npm run build
+  publish:
+    machine:
+      enabled: true
+    working_directory: ~/fusion
+    steps:
+      - run:
+          name: Build
+          command: npm run build
 
-      - run: npm publish --access=public
+      - run:
+          name: Prepare for publishing
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+
+      - run:
+          name: Publish to NPM
+          command: npm publish --access=public
+
+workflows:
+  version: 2
+  dev-test_build-publish:
+    jobs:
+      - test
+      - build-publish:
+        requires:
+          - test
+          - publish
+        filters:
+          branches:
+            only:
+              - master
