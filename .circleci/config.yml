@@ -29,6 +29,7 @@ jobs:
       enabled: true
     working_directory: ~/fusion
     steps:
+      - checkout
       - run:
           name: Build
           command: npm run build
