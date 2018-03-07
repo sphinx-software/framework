@@ -46,10 +46,9 @@ workflows:
   dev-test_build-publish:
     jobs:
       - test
-      - build-publish:
+      - publish:
           requires:
             - test
-            - publish
           filters:
             branches:
               only:
