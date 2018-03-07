@@ -45,14 +45,12 @@ workflows:
   version: 2
   dev-test_build-publish:
     jobs:
-      - dev-test:
-        requires:
-          - test
+      - test
       - build-publish:
-        requires:
-          - test
-          - publish
-        filters:
-          branches:
-            only:
-              - master
+          requires:
+            - test
+            - publish
+          filters:
+            branches:
+              only:
+                - master
