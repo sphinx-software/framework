@@ -45,7 +45,9 @@ workflows:
   version: 2
   dev-test_build-publish:
     jobs:
-      - test
+      - dev-test:
+        requires:
+          - test
       - build-publish:
         requires:
           - test
