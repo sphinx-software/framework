@@ -1,4 +1,4 @@
-# Fusion Framework v0.4
+# Fusion Framework v1.4
 
 [![CircleCI](https://circleci.com/gh/sphinx-software/framework/tree/master.svg?style=svg)](https://circleci.com/gh/sphinx-software/framework/tree/master)
 
